@@ -11,22 +11,30 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
-    <section className="section-padding bg-paper-2">
-      <div className="container-custom max-w-4xl">
-        <SectionNumber number="06 —" label="Domande Frequenti" />
-        
+    <section className="section-padding bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white relative overflow-hidden">
+      {/* Soft glow decorative */}
+      <div
+        className="absolute -top-32 -left-20 w-[500px] h-[500px] rounded-full opacity-25 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.5) 0%, transparent 70%)' }}
+      />
+      <div
+        className="absolute -bottom-32 -right-20 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(59,95,232,0.6) 0%, transparent 70%)' }}
+      />
+
+      <div className="container-custom max-w-4xl relative z-10">
+        <SectionNumber number="06 —" label="Domande Frequenti" light />
+
         <Reveal>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mb-12">
-            Hai dubbi?
-            <br />
-            <em className="text-accent-tech not-italic">Risposte chiare.</em>
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-12 max-w-3xl text-pearl-shine">
+            Hai dubbi? Risposte chiare.
           </h2>
         </Reveal>
-        
+
         <div className="space-y-4">
           {FAQ_ITEMS.map((item, index) => (
             <Reveal key={index} delay={100 + index * 50}>
-              <div className="bg-white rounded-xl border border-line overflow-hidden">
+              <div className="rounded-xl border border-white/15 bg-white/[0.04] backdrop-blur-sm overflow-hidden hover:border-white/25 transition-colors">
                 <button
                   className="w-full px-6 py-5 flex items-center justify-between text-left"
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
@@ -34,19 +42,19 @@ export function FAQ() {
                   aria-controls={`faq-answer-${index}`}
                 >
                   <div className="flex items-center gap-4">
-                    <span className="font-mono text-sm text-accent-brass">
+                    <span className="font-mono text-sm text-brand-violet">
                       {String(index + 1).padStart(2, '0')}
                     </span>
-                    <h3 className="font-medium text-ink">{item.question}</h3>
+                    <h3 className="font-medium text-white">{item.question}</h3>
                   </div>
-                  <ChevronDown 
+                  <ChevronDown
                     className={cn(
-                      'w-5 h-5 text-ink-300 transition-transform duration-300',
+                      'w-5 h-5 text-white/50 transition-transform duration-300',
                       openIndex === index && 'rotate-180'
-                    )} 
+                    )}
                   />
                 </button>
-                
+
                 <div
                   id={`faq-answer-${index}`}
                   className={cn(
@@ -55,7 +63,7 @@ export function FAQ() {
                   )}
                 >
                   <div className="px-6 pb-5 pl-16">
-                    <p className="text-ink-500 leading-relaxed">{item.answer}</p>
+                    <p className="text-white/70 leading-relaxed">{item.answer}</p>
                   </div>
                 </div>
               </div>
