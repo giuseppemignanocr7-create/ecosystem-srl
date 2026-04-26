@@ -20,19 +20,18 @@ import {
 } from 'lucide-react'
 
 const SLIDES = [
-  { key: 'build', dark: false, render: () => <BuildSuiteContent />, label: 'BuildSuite' },
-  { key: 'coremind', dark: true, render: () => <CoreMindContent />, label: 'CoreMind' },
-  { key: 'pos', dark: false, render: () => <POSContent />, label: 'RetailSuite POS' },
+  { key: 'build', dark: false, render: () => <BuildSuiteContent />, label: 'BuildSuite · EDILIZIA' },
+  { key: 'coremind', dark: true, render: () => <CoreMindContent />, label: 'CoreMind · AI' },
+  { key: 'pos', dark: false, render: () => <POSContent />, label: 'RetailSuite · POS' },
 ]
 
-const AUTO_INTERVAL = 5500
+const AUTO_INTERVAL = 4200
 
 export function HeroStack() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const ease = [0.16, 1, 0.3, 1] as const
 
-  // Auto-advance
   useEffect(() => {
     if (paused) return
     const t = setInterval(() => {
@@ -47,80 +46,92 @@ export function HeroStack() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Track: tutte le card sempre renderizzate (animazioni interne mai interrotte) */}
-      <div className="relative overflow-hidden rounded-2xl">
-        <motion.div
-          className="flex"
-          animate={{ x: `-${active * 100}%` }}
-          transition={{ duration: 0.8, ease }}
-        >
-          {SLIDES.map((slide, i) => (
-            <motion.div
-              key={slide.key}
-              className="w-full shrink-0 px-2"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.6 + i * 0.15, ease }}
-            >
-              <Window dark={slide.dark}>{slide.render()}</Window>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Gradient edges per hint "c'è altro" */}
-        <div className="absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-paper to-transparent pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-paper to-transparent pointer-events-none" />
-      </div>
-
-      {/* Controls: arrow + dots + labels */}
-      <div className="flex items-center justify-between mt-5 px-2 gap-4">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setActive((i) => (i - 1 + SLIDES.length) % SLIDES.length)}
-            className="w-8 h-8 rounded-full border border-line bg-paper hover:bg-paper-2 flex items-center justify-center text-ink-500 hover:text-brand-violet transition-colors"
-            aria-label="Slide precedente"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            onClick={() => setActive((i) => (i + 1) % SLIDES.length)}
-            className="w-8 h-8 rounded-full border border-line bg-paper hover:bg-paper-2 flex items-center justify-center text-ink-500 hover:text-brand-violet transition-colors"
-            aria-label="Slide successiva"
-          >
-            →
-          </button>
-        </div>
-
-        <div className="flex items-center gap-1.5 flex-1 justify-center">
-          {SLIDES.map((s, i) => (
-            <button
+      {/* Tutte e 3 le card visibili in riga, quella attiva scale + opacity piena */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 items-stretch">
+        {SLIDES.map((slide, i) => {
+          const isActive = active === i
+          return (
+            <motion.button
               type="button"
-              key={s.key}
+              key={slide.key}
               onClick={() => setActive(i)}
-              className="group flex items-center gap-2 py-1"
-              aria-label={`Vai a ${s.label}`}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: isActive ? 1.02 : 0.96,
+              }}
+              transition={{
+                duration: 0.7,
+                delay: isActive ? 0 : 0,
+                ease,
+                scale: { duration: 0.6, ease },
+                opacity: { duration: 0.7, delay: 0.4 + i * 0.15 },
+                y: { duration: 0.8, delay: 0.4 + i * 0.15 },
+              }}
+              className="text-left relative group"
+              style={{ zIndex: isActive ? 10 : 1 }}
+              aria-label={`Focus su ${slide.label}`}
             >
-              <span
-                className={`h-1.5 rounded-full transition-all ${
-                  active === i ? 'w-8 bg-brand-violet' : 'w-1.5 bg-ink-300 group-hover:bg-ink-500'
-                }`}
-              />
-              <span
-                className={`font-mono text-[9px] tracking-[0.14em] uppercase transition-colors ${
-                  active === i ? 'text-ink-900' : 'text-ink-400 group-hover:text-ink-700'
-                }`}
+              <motion.div
+                animate={{
+                  boxShadow: isActive
+                    ? '0 30px 60px -15px rgba(124,58,237,0.35), 0 0 0 2px rgba(124,58,237,0.4)'
+                    : '0 10px 30px -10px rgba(15,23,42,0.12), 0 0 0 1px rgba(15,23,42,0.06)',
+                  filter: isActive ? 'saturate(1)' : 'saturate(0.85)',
+                }}
+                transition={{ duration: 0.5, ease }}
+                className="rounded-2xl overflow-hidden"
+                style={{ opacity: isActive ? 1 : 0.75 }}
               >
-                {s.label}
-              </span>
-            </button>
-          ))}
-        </div>
+                <Window dark={slide.dark}>{slide.render()}</Window>
+              </motion.div>
 
-        <div className="font-mono text-[9px] tracking-[0.14em] uppercase text-ink-400 tabular-nums w-14 text-right">
-          {String(active + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
-        </div>
+              {/* Label sotto ogni card */}
+              <div className="mt-3 flex items-center justify-between px-1">
+                <div className="flex items-center gap-2">
+                  <motion.span
+                    animate={{
+                      scale: isActive ? [1, 1.3, 1] : 1,
+                      background: isActive ? '#7C3AED' : '#CBD5E1',
+                    }}
+                    transition={{
+                      scale: { duration: 1.2, repeat: isActive ? Infinity : 0 },
+                      background: { duration: 0.3 },
+                    }}
+                    className="w-1.5 h-1.5 rounded-full"
+                  />
+                  <span
+                    className={`font-mono text-[10px] tracking-[0.16em] uppercase transition-colors ${
+                      isActive ? 'text-ink-900' : 'text-ink-400'
+                    }`}
+                  >
+                    {slide.label}
+                  </span>
+                </div>
+                <span
+                  className={`font-mono text-[9px] tabular-nums transition-colors ${
+                    isActive ? 'text-brand-violet' : 'text-ink-400'
+                  }`}
+                >
+                  {String(i + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
+                </span>
+              </div>
+
+              {/* Progress bar sulla card attiva */}
+              {isActive && !paused && (
+                <motion.div
+                  key={`progress-${active}`}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: AUTO_INTERVAL / 1000, ease: 'linear' }}
+                  className="absolute bottom-[-12px] left-0 right-0 h-0.5 bg-brand-violet origin-left rounded-full"
+                  aria-hidden
+                />
+              )}
+            </motion.button>
+          )
+        })}
       </div>
     </div>
   )

@@ -7,92 +7,77 @@ import { MagneticButton } from '@/components/motion/MagneticButton'
 
 export function Hero() {
   return (
-    <section className="relative flex items-center py-8 lg:py-10 px-6 lg:px-12 overflow-hidden">
-      <div className="mesh-bg" aria-hidden />
+    <section className="relative py-12 lg:py-16 px-6 lg:px-12 overflow-hidden bg-gradient-to-b from-[#EEF2FF] via-[#F3F4FF] to-[#EEF6FF]">
+      {/* Subtle decorative bg */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-60"
+        aria-hidden
+        style={{
+          background:
+            'radial-gradient(circle at 20% 20%, rgba(124,58,237,0.10), transparent 55%), radial-gradient(circle at 80% 70%, rgba(59,95,232,0.10), transparent 55%)',
+        }}
+      />
       <div className="grain" aria-hidden />
       <ShutterReveal />
 
-      <div className="max-w-[1400px] mx-auto w-full grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center relative z-10">
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.1 }}
-            className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] uppercase text-accent-brass mb-6"
-          >
-            <motion.span
-              className="w-1.5 h-1.5 rounded-full bg-brand-violet"
-              animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-              transition={{ duration: 1.8, repeat: Infinity }}
-            />
-            LA PIATTAFORMA · AI-NATIVE · MADE IN ITALY
-          </motion.div>
+      <div className="max-w-[1400px] mx-auto w-full relative z-10 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.0 }}
+          className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] uppercase text-accent-brass mb-8"
+        >
+          <motion.span
+            className="w-1.5 h-1.5 rounded-full bg-brand-violet"
+            animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity }}
+          />
+          LA PIATTAFORMA · AI-NATIVE · MADE IN ITALY
+        </motion.div>
 
-          <h1 className="font-serif font-normal text-[clamp(40px,5.5vw,76px)] leading-[1.0] tracking-[-0.03em] mb-8 text-ink-900">
-            <RevealLine delay={1.3}>Il sistema operativo</RevealLine>
-            <RevealLine delay={1.5}>
-              della tua <em className="italic text-gradient-animate">azienda.</em>
-            </RevealLine>
-          </h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.9 }}
-            className="text-lg lg:text-xl text-ink-700 max-w-[540px] mb-10 leading-relaxed"
-          >
-            Costruito intorno a CoreMind, l&apos;intelligenza nativa che capisce la tua
-            azienda e la fa lavorare per te. Un unico database. Un solo login.
-            Nessun limite.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 2.1 }}
-            className="flex flex-wrap gap-3"
-          >
-            <MagneticButton
-              href="/contatti"
-              className="shimmer-cta relative inline-flex items-center gap-2 bg-ink-900 text-white px-6 py-3.5 rounded-lg text-sm font-medium hover:bg-brand-navy transition-colors shadow-lg shadow-ink-900/20"
-            >
-              <span className="relative z-10">Richiedi una demo →</span>
-            </MagneticButton>
-            <Link
-              href="/demo"
-              className="group relative border border-line-strong px-6 py-3.5 rounded-lg text-sm font-medium hover:bg-paper-2 transition-colors overflow-hidden"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                Prova la piattaforma live
-              </span>
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 2.4 }}
-            className="mt-12 flex items-center gap-6 text-xs text-ink-500"
-          >
-            <div className="flex items-center gap-2">
-              <LiveDot /> CoreMind in linea
-            </div>
-            <div className="h-3 w-px bg-line-strong" />
-            <span className="font-mono">142 aziende · live adesso</span>
-          </motion.div>
-        </div>
+        <h1 className="font-serif font-normal text-[clamp(36px,5.2vw,72px)] leading-[1.05] tracking-[-0.03em] mb-10 text-ink-900">
+          <RevealLine delay={1.2}>
+            L&apos;<em className="italic text-gradient-animate">ecosistema</em> definitivo per il tuo business
+          </RevealLine>
+          <RevealLine delay={1.4}>Un solo centro di comando</RevealLine>
+          <RevealLine delay={1.6}>
+            <em className="italic text-gradient-animate">Infinite</em> possibilità
+          </RevealLine>
+        </h1>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 1.0 }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.9 }}
+          className="flex flex-wrap gap-3 justify-center mb-10"
+        >
+          <MagneticButton
+            href="/contatti"
+            className="shimmer-cta relative inline-flex items-center gap-2 bg-ink-900 text-white px-6 py-3.5 rounded-lg text-sm font-medium hover:bg-brand-navy transition-colors shadow-lg shadow-ink-900/20"
+          >
+            <span className="relative z-10">Richiedi una demo →</span>
+          </MagneticButton>
+          <Link
+            href="/demo"
+            className="group relative border border-line-strong bg-white/70 backdrop-blur-sm px-6 py-3.5 rounded-lg text-sm font-medium hover:bg-white transition-colors"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+              Prova la piattaforma live
+            </span>
+          </Link>
+        </motion.div>
+
+        {/* 3 card sotto il testo, tutte visibili, auto-scroll con animazioni interne intatte */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 2.1 }}
+          className="mt-6"
         >
           <HeroStack />
         </motion.div>
       </div>
-
-      <ScrollHint />
     </section>
   )
 }

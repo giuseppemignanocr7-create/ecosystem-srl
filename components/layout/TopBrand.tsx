@@ -6,7 +6,6 @@ import { Logo } from '@/components/ui/Logo'
 import { Activity, Cpu, Globe2, ShieldCheck, Sparkles, Users } from 'lucide-react'
 
 const TICKERS = [
-  { icon: Activity, label: 'Sistema', value: 'OPERATIVO', accent: '#10B981', live: true },
   { icon: Cpu, label: 'CoreMind', value: 'ATTIVO', accent: '#7C3AED', live: true },
   { icon: Users, label: 'Aziende live', value: '142', accent: '#3B5FE8' },
   { icon: Globe2, label: 'Hosting', value: 'EU · Italia', accent: '#06B6D4' },
@@ -20,18 +19,18 @@ export function TopBrand() {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-      className="hidden lg:flex w-full pt-5 pb-3 px-12 relative z-20 items-center gap-8"
+      className="hidden lg:flex w-full pt-6 pb-3 px-12 relative z-20 items-center gap-10"
     >
       <Link
         href="/"
         aria-label="Ecosystem — Home"
         className="shrink-0 hover:opacity-85 transition-opacity"
       >
-        <Logo variant="light" size={150} priority />
+        <Logo variant="light" size={220} priority />
       </Link>
 
       {/* LIVE STATUS RAIL */}
-      <div className="flex-1 grid grid-cols-3 xl:grid-cols-6 gap-3 min-w-0">
+      <div className="flex-1 grid grid-cols-3 xl:grid-cols-5 gap-3 min-w-0">
         {TICKERS.map((t, i) => {
           const Icon = t.icon
           return (
