@@ -31,7 +31,12 @@ export function SuiteGrid() {
         <SectionNumber number="02 —" label="La Piattaforma" />
 
         <Reveal delay={100}>
-          <p className="text-lg lg:text-xl text-ink-900 mt-4 mb-12 max-w-3xl leading-relaxed font-medium">
+          <p className="text-lg text-ink-700 mt-4 mb-4 max-w-3xl leading-relaxed">
+            Sviluppate con la precisione di sistemi nativi, le nostre suite operano in un
+            ecosistema integrato, un unico DNA tecnologico, garantendo continuità operativa e
+            intelligenza diffusa.
+          </p>
+          <p className="text-lg lg:text-xl text-ink-900 mb-12 max-w-3xl leading-relaxed font-medium">
             Scegli la suite più affine al tuo settore o progetta con noi la tua configurazione
             esclusiva.
           </p>
@@ -47,48 +52,63 @@ export function SuiteGrid() {
                 <Link
                   key={suite.id}
                   href={`/suite/${suite.id}/`}
-                  className="group relative rounded-xl border border-line bg-paper-2 hover:bg-paper p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg overflow-hidden flex flex-col h-full"
-                  style={{ ['--c' as string]: color }}
+                  className="group relative rounded-xl border p-5 transition-all hover:-translate-y-1 hover:shadow-xl overflow-hidden flex flex-col h-full"
+                  style={{
+                    ['--c' as string]: color,
+                    background: `linear-gradient(135deg, ${color}14 0%, ${color}08 60%, ${color}03 100%)`,
+                    borderColor: `${color}40`,
+                    boxShadow: `0 1px 0 ${color}20 inset`,
+                  }}
                 >
                   {/* Strip top colorata */}
                   <span
                     aria-hidden
-                    className="absolute top-0 left-0 right-0 h-0.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                    className="absolute top-0 left-0 right-0 h-1 origin-left transition-transform duration-300"
+                    style={{ background: color }}
+                  />
+                  {/* Soft glow blob in basso a destra */}
+                  <span
+                    aria-hidden
+                    className="absolute -bottom-12 -right-12 w-32 h-32 rounded-full opacity-40 blur-2xl pointer-events-none transition-opacity group-hover:opacity-70"
                     style={{ background: color }}
                   />
 
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="relative flex items-center justify-between mb-3">
                     <span
-                      className="w-2 h-2 rounded-full transition-transform group-hover:scale-150"
-                      style={{ background: color }}
+                      className="w-2.5 h-2.5 rounded-full transition-transform group-hover:scale-150 shadow"
+                      style={{ background: color, boxShadow: `0 0 0 3px ${color}25` }}
                     />
-                    <span className="font-mono text-[10px] tracking-wider text-ink-300">
+                    <span className="font-mono text-[10px] tracking-wider text-ink-400">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                   </div>
 
-                  <h4 className="font-serif text-lg text-ink-900 mb-2 group-hover:text-[color:var(--c)] transition-colors">
+                  <h4
+                    className="relative font-serif text-lg mb-2 transition-colors"
+                    style={{ color: color }}
+                  >
                     {suite.name}
                   </h4>
 
                   <span
-                    className="inline-block w-fit font-mono text-[9px] tracking-[0.16em] uppercase px-2 py-0.5 rounded mb-3"
+                    className="relative inline-block w-fit font-mono text-[9px] tracking-[0.16em] uppercase px-2 py-0.5 rounded mb-3"
                     style={{
                       color: color,
-                      background: `${color}14`,
-                      border: `1px solid ${color}33`,
+                      background: `${color}1F`,
+                      border: `1px solid ${color}55`,
                     }}
                   >
                     {tag}
                   </span>
 
-                  <p className="text-xs text-ink-500 leading-relaxed flex-1">
+                  <p className="relative text-xs text-ink-700 leading-relaxed flex-1">
                     {suite.description.split('.')[0]}.
                   </p>
 
                   <ArrowRight
                     size={14}
-                    className="text-ink-300 group-hover:text-[color:var(--c)] group-hover:translate-x-1 transition-all mt-3 self-end"
+                    className="relative group-hover:translate-x-1 transition-all mt-3 self-end"
+                    style={{ color }}
                   />
                 </Link>
               )
@@ -118,10 +138,8 @@ export function SuiteGrid() {
                   <br />
                   <em className="italic text-brand-violet">non è in lista?</em>
                 </h3>
-                <p className="text-base lg:text-lg text-white/70 mb-8 leading-relaxed max-w-lg">
-                  Studiamo i tuoi flussi, mappiamo le entità, progettiamo i moduli. CoreMind apprende
-                  il tuo dominio e il prodotto cresce con te. <strong className="text-white">Stessa
-                  piattaforma, stessa AI, esperienza pensata su misura.</strong>
+                <p className="text-base lg:text-lg text-white mb-8 leading-relaxed max-w-lg font-medium">
+                  Progetta con noi la tua suite.
                 </p>
 
                 <div className="grid sm:grid-cols-3 gap-4 mb-8">
