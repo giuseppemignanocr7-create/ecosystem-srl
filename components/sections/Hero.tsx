@@ -25,7 +25,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.0 }}
-          className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] uppercase text-accent-brass mb-8"
+          className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] uppercase mb-8 text-pearl-3d"
         >
           <motion.span
             className="w-1.5 h-1.5 rounded-full bg-brand-violet"
@@ -37,11 +37,11 @@ export function Hero() {
 
         <h1 className="font-serif font-normal text-[clamp(32px,4.8vw,64px)] leading-[1.1] tracking-[0.02em] uppercase mb-10 text-pearl-3d">
           <RevealLine delay={1.2}>
-            L&apos;<em className="not-italic text-gradient-hero">ECOSISTEMA</em> DEFINITIVO PER IL TUO BUSINESS
+            L&apos;<em className="italic text-gradient-hero">ECOSISTEMA</em> DEFINITIVO PER IL TUO BUSINESS
           </RevealLine>
           <RevealLine delay={1.4}>UN SOLO CENTRO DI COMANDO</RevealLine>
           <RevealLine delay={1.6}>
-            <em className="not-italic text-gradient-hero">INFINITE</em> POSSIBILITÀ
+            <em className="italic text-gradient-hero">INFINITE</em> POSSIBILITÀ
           </RevealLine>
         </h1>
 

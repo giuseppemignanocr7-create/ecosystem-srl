@@ -36,23 +36,23 @@ const capabilities = [
 
 export function CoreMindFlagship() {
   return (
-    <section className="py-24 lg:py-32 bg-ink text-white relative overflow-hidden">
+    <section className="py-24 lg:py-32 relative overflow-hidden bg-gradient-to-b from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white">
       {/* Glow effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-tech/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-brass/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-tech/25 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-brass/15 rounded-full blur-3xl" />
       </div>
       
       <div className="container-custom relative z-10">
-        <SectionNumber number="01 —" label="Intelligence" light />
+        <SectionNumber number="01 —" label="INTELLIGENCE" light />
         
         <Reveal>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.05] mb-16 max-w-4xl">
-            Un cervello.
+          <h2 className="font-serif font-normal uppercase tracking-[0.02em] text-[clamp(32px,4.6vw,64px)] leading-[1.08] mb-16 max-w-5xl text-pearl-3d">
+            UN CERVELLO.
             <br />
-            <em className="text-accent-tech not-italic">Che conosce la tua azienda</em>
+            CHE <em className="italic text-gradient-hero">CONOSCE</em> LA TUA AZIENDA
             <br />
-            meglio di te.
+            MEGLIO DI TE.
           </h2>
         </Reveal>
         
