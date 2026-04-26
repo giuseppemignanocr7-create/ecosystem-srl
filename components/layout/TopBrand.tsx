@@ -39,22 +39,22 @@ export function TopBrand() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 + i * 0.07, duration: 0.5 }}
-              className="flex items-center gap-2.5 px-3 py-2 rounded-lg border border-line bg-paper/60 backdrop-blur-sm hover:bg-paper transition-colors min-w-0"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-line bg-paper/70 backdrop-blur-sm hover:bg-paper transition-colors min-w-0 shadow-sm"
             >
               <div
-                className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
+                className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
                 style={{ background: `${t.accent}1A` }}
               >
-                <Icon size={13} style={{ color: t.accent }} />
+                <Icon size={16} style={{ color: t.accent }} />
               </div>
               <div className="min-w-0">
-                <div className="font-mono text-[8px] tracking-[0.16em] uppercase text-ink-400 truncate">
+                <div className="font-mono text-[9px] tracking-[0.16em] uppercase text-ink-400 truncate">
                   {t.label}
                 </div>
-                <div className="text-[11px] font-semibold text-ink-900 truncate flex items-center gap-1.5">
+                <div className="text-[13px] font-semibold text-ink-900 truncate flex items-center gap-1.5">
                   {t.live && (
                     <motion.span
-                      className="w-1.5 h-1.5 rounded-full"
+                      className="w-2 h-2 rounded-full"
                       style={{ background: t.accent }}
                       animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 1.6, repeat: Infinity }}
