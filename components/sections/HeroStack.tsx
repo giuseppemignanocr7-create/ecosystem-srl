@@ -19,10 +19,12 @@ import {
   CreditCard,
 } from 'lucide-react'
 
-const SLIDES = [
-  { key: 'build', dark: false, render: () => <BuildSuiteContent />, label: 'BuildSuite · EDILIZIA' },
-  { key: 'coremind', dark: true, render: () => <CoreMindContent />, label: 'CoreMind · AI' },
-  { key: 'pos', dark: false, render: () => <POSContent />, label: 'RetailSuite · POS' },
+type Tone = 'light' | 'dark' | 'violet'
+
+const SLIDES: { key: string; tone: Tone; render: () => JSX.Element; label: string }[] = [
+  { key: 'build', tone: 'light', render: () => <BuildSuiteContent />, label: 'BuildSuite · EDILIZIA' },
+  { key: 'coremind', tone: 'dark', render: () => <CoreMindContent />, label: 'CoreMind · AI' },
+  { key: 'pos', tone: 'violet', render: () => <POSContent violet />, label: 'RetailSuite · POS' },
 ]
 
 const AUTO_INTERVAL = 4200
@@ -84,7 +86,7 @@ export function HeroStack() {
                 className="rounded-2xl overflow-hidden"
                 style={{ opacity: isActive ? 1 : 0.75 }}
               >
-                <Window dark={slide.dark}>{slide.render()}</Window>
+                <Window tone={slide.tone}>{slide.render()}</Window>
               </motion.div>
 
               {/* Label sotto ogni card */}
@@ -138,35 +140,52 @@ export function HeroStack() {
 }
 
 function Window({
-  dark,
+  tone = 'light',
   children,
 }: {
-  dark?: boolean
+  tone?: 'light' | 'dark' | 'violet'
   children: React.ReactNode
 }) {
+  const isDark = tone === 'dark'
+  const isViolet = tone === 'violet'
+
+  const shellBg = isDark
+    ? 'bg-[#0A0A0F] border-white/10'
+    : isViolet
+    ? 'border-violet-300/40'
+    : 'bg-paper border-line-strong'
+
+  const chromeBg = isDark
+    ? 'bg-white/5 border-white/5'
+    : isViolet
+    ? 'bg-white/40 border-violet-300/30 backdrop-blur-sm'
+    : 'bg-paper-2 border-line'
+
+  const urlBg = isDark
+    ? 'bg-white/5 text-white/40'
+    : isViolet
+    ? 'bg-white/50 text-violet-900/60'
+    : 'bg-paper text-ink-400'
+
   return (
     <div
-      className={`rounded-xl overflow-hidden border backdrop-blur-sm ${
-        dark ? 'bg-[#0A0A0F] border-white/10' : 'bg-paper border-line-strong'
-      }`}
+      className={`rounded-xl overflow-hidden border backdrop-blur-sm ${shellBg}`}
       style={{
-        boxShadow:
-          '0 40px 80px -20px rgba(11,11,13,0.30), 0 18px 36px -18px rgba(11,11,13,0.18)',
+        background: isViolet
+          ? 'linear-gradient(160deg, #C4B5FD 0%, #A78BFA 55%, #8B5CF6 100%)'
+          : undefined,
+        boxShadow: isViolet
+          ? '0 40px 80px -20px rgba(124,58,237,0.55), 0 18px 36px -18px rgba(124,58,237,0.35)'
+          : '0 40px 80px -20px rgba(11,11,13,0.30), 0 18px 36px -18px rgba(11,11,13,0.18)',
       }}
     >
       {/* macOS chrome */}
-      <div
-        className={`flex items-center gap-2 px-3 py-2 border-b ${
-          dark ? 'bg-white/5 border-white/5' : 'bg-paper-2 border-line'
-        }`}
-      >
+      <div className={`flex items-center gap-2 px-3 py-2 border-b ${chromeBg}`}>
         <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
         <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
         <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
         <div
-          className={`ml-3 flex-1 px-2 py-0.5 rounded text-center text-[9px] font-mono tracking-wider ${
-            dark ? 'bg-white/5 text-white/40' : 'bg-paper text-ink-400'
-          }`}
+          className={`ml-3 flex-1 px-2 py-0.5 rounded text-center text-[9px] font-mono tracking-wider ${urlBg}`}
         >
           app.ecosystem.org
         </div>
@@ -582,7 +601,7 @@ const POS_ITEMS = [
   ['Pane Altamura', '×1', 3.2],
 ] as const
 
-function POSContent() {
+function POSContent({ violet = false }: { violet?: boolean }) {
   const [visibleRows, setVisibleRows] = useState(0)
 
   // Loop: scrive scontrino, pausa, riavvia
@@ -600,11 +619,54 @@ function POSContent() {
     0,
   )
 
+  // Palette adattata a tone violet (sfondo lavanda) o standard (bg-paper)
+  const c = violet
+    ? {
+        body: 'bg-white/10 backdrop-blur-sm',
+        sidebar: 'bg-white/15 border-r border-white/15',
+        logo: 'bg-gradient-to-br from-fuchsia-300 to-violet-200 text-violet-900',
+        navActive: 'bg-white/25 text-white',
+        navIdle: 'text-white/55',
+        header: 'bg-white/10 border-b border-white/15',
+        headerLabel: 'text-white/85',
+        headerOrder: 'text-white/55',
+        rowDivider: 'border-b border-white/15',
+        rowText: 'text-white',
+        rowQty: 'text-white/55',
+        emptyText: 'text-white/55',
+        totalCard: 'bg-white/15 border border-white/25',
+        totalLabel: 'text-white/65',
+        totalValue: 'text-white',
+        totalCount: 'text-white/55',
+        cta: 'bg-white text-violet-700 hover:bg-violet-50',
+        liveDot: 'bg-emerald-300',
+      }
+    : {
+        body: 'bg-paper-2',
+        sidebar: 'bg-paper border-r border-line',
+        logo: 'bg-gradient-to-br from-pink-500 to-pink-600 text-white',
+        navActive: 'bg-pink-500/10 text-pink-700',
+        navIdle: 'text-ink-400',
+        header: 'bg-paper border-b border-line',
+        headerLabel: 'text-ink-700',
+        headerOrder: 'text-ink-400',
+        rowDivider: 'border-b border-line',
+        rowText: '',
+        rowQty: 'text-ink-400',
+        emptyText: 'text-ink-400',
+        totalCard: 'bg-gradient-to-br from-paper to-paper-2 border border-line',
+        totalLabel: 'text-ink-400',
+        totalValue: '',
+        totalCount: 'text-ink-400',
+        cta: 'bg-pink-500 hover:bg-pink-600 text-white',
+        liveDot: 'bg-success',
+      }
+
   return (
-    <div className="flex h-[260px] lg:h-[340px] bg-paper-2">
+    <div className={`flex h-[260px] lg:h-[340px] ${c.body}`}>
       {/* mini-sidebar */}
-      <aside className="w-[60px] lg:w-[72px] bg-paper border-r border-line flex flex-col items-center py-2 gap-1.5 shrink-0">
-        <div className="w-6 h-6 rounded bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-white text-[9px] font-bold mb-1">
+      <aside className={`w-[60px] lg:w-[72px] flex flex-col items-center py-2 gap-1.5 shrink-0 ${c.sidebar}`}>
+        <div className={`w-6 h-6 rounded flex items-center justify-center text-[9px] font-bold mb-1 ${c.logo}`}>
           R
         </div>
         {POS_NAV.map((n) => {
@@ -613,7 +675,7 @@ function POSContent() {
             <div
               key={n.id}
               className={`w-9 h-9 rounded flex items-center justify-center ${
-                n.active ? 'bg-pink-500/10 text-pink-700' : 'text-ink-400'
+                n.active ? c.navActive : c.navIdle
               }`}
             >
               <Icon size={13} />
@@ -623,20 +685,20 @@ function POSContent() {
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-7 flex items-center justify-between px-2.5 border-b border-line bg-paper">
-          <div className="font-mono text-[8px] tracking-[0.16em] uppercase text-ink-700 flex items-center gap-1.5">
+        <header className={`h-7 flex items-center justify-between px-2.5 ${c.header}`}>
+          <div className={`font-mono text-[8px] tracking-[0.16em] uppercase flex items-center gap-1.5 ${c.headerLabel}`}>
             <motion.span
-              className="w-1.5 h-1.5 rounded-full bg-success"
+              className={`w-1.5 h-1.5 rounded-full ${c.liveDot}`}
               animate={{ opacity: [1, 0.4, 1] }}
               transition={{ duration: 1.4, repeat: Infinity }}
             />
             POS · LIVE
           </div>
-          <div className="font-mono text-[8px] text-ink-400">#04821</div>
+          <div className={`font-mono text-[8px] ${c.headerOrder}`}>#04821</div>
         </header>
 
         <div className="flex-1 grid grid-cols-[1fr_auto] gap-2 p-2.5 lg:p-3 min-h-0">
-          <div className="overflow-y-auto space-y-1 text-[10px] lg:text-[11px] scrollbar-hide">
+          <div className={`overflow-y-auto space-y-1 text-[10px] lg:text-[11px] scrollbar-hide ${c.rowText}`}>
             {POS_ITEMS.map(([item, q, p], i) => (
               <AnimatePresence key={i}>
                 {visibleRows > i && (
@@ -645,10 +707,10 @@ function POSContent() {
                     animate={{ opacity: 1, x: 0, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="flex justify-between items-center border-b border-line py-1"
+                    className={`flex justify-between items-center py-1 ${c.rowDivider}`}
                   >
                     <span className="truncate flex-1">{item}</span>
-                    <span className="font-mono text-ink-400 shrink-0 ml-2">{q}</span>
+                    <span className={`font-mono shrink-0 ml-2 ${c.rowQty}`}>{q}</span>
                     <span className="font-mono shrink-0 ml-2 tabular-nums">€{(p as number).toFixed(2)}</span>
                   </motion.div>
                 )}
@@ -658,27 +720,27 @@ function POSContent() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-[8px] text-ink-400 italic text-center pt-2"
+                className={`text-[8px] italic text-center pt-2 ${c.emptyText}`}
               >
                 ⟳ in attesa nuovo scontrino...
               </motion.div>
             )}
           </div>
 
-          <div className="w-[100px] lg:w-[120px] bg-gradient-to-br from-paper to-paper-2 rounded-lg border border-line p-2 flex flex-col justify-between">
+          <div className={`w-[100px] lg:w-[120px] rounded-lg p-2 flex flex-col justify-between ${c.totalCard}`}>
             <div>
-              <div className="font-mono text-[7px] tracking-[0.16em] uppercase text-ink-400">
+              <div className={`font-mono text-[7px] tracking-[0.16em] uppercase ${c.totalLabel}`}>
                 TOTALE
               </div>
               <motion.div
                 key={total}
                 initial={{ scale: 1.1 }}
                 animate={{ scale: 1 }}
-                className="font-serif text-2xl lg:text-3xl leading-none mt-1 tabular-nums"
+                className={`font-serif text-2xl lg:text-3xl leading-none mt-1 tabular-nums ${c.totalValue}`}
               >
                 €{total.toFixed(2)}
               </motion.div>
-              <div className="font-mono text-[7px] text-ink-400 mt-1">
+              <div className={`font-mono text-[7px] mt-1 ${c.totalCount}`}>
                 {visibleRows} articoli
               </div>
             </div>
@@ -690,7 +752,7 @@ function POSContent() {
                   : { scale: 1 }
               }
               transition={{ duration: 1, repeat: Infinity }}
-              className="bg-pink-500 hover:bg-pink-600 text-white text-center py-1.5 rounded text-[9px] font-semibold tracking-wider"
+              className={`text-center py-1.5 rounded text-[9px] font-semibold tracking-wider transition-colors ${c.cta}`}
             >
               INCASSA →
             </motion.button>
