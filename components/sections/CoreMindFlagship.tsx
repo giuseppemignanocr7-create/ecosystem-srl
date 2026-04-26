@@ -50,7 +50,7 @@ export function CoreMindFlagship() {
           <h2 className="font-serif font-normal italic lowercase tracking-[-0.01em] text-[clamp(34px,5vw,68px)] leading-[1.05] mb-16 max-w-5xl text-pearl-shine">
             un cervello.
             <br />
-            che conosce la tua azienda
+            che <em>conosce</em> la tua azienda
             <br />
             meglio di te.
           </h2>

@@ -36,9 +36,9 @@ export function Hero() {
         </motion.div>
 
         <h1 className="font-serif font-normal italic text-[clamp(36px,5.4vw,72px)] leading-[1.05] tracking-[-0.01em] lowercase mb-10 text-pearl-shine">
-          <RevealLine delay={1.2}>l&apos;ecosistema definitivo per il tuo business</RevealLine>
+          <RevealLine delay={1.2}>l&apos;<em>ecosistema</em> definitivo per il tuo business</RevealLine>
           <RevealLine delay={1.4}>un solo centro di comando</RevealLine>
-          <RevealLine delay={1.6}>infinite possibilità</RevealLine>
+          <RevealLine delay={1.6}><em>infinite</em> possibilità</RevealLine>
         </h1>
 
         <motion.div
