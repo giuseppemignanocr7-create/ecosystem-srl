@@ -47,10 +47,10 @@ export function CoreMindFlagship() {
         <SectionNumber number="01 —" label="INTELLIGENCE" light />
         
         <Reveal>
-          <h2 className="font-serif font-normal uppercase tracking-[0.02em] text-[clamp(32px,4.6vw,64px)] leading-[1.08] mb-16 max-w-5xl text-pearl-3d">
+          <h2 className="font-serif font-normal uppercase tracking-[0.02em] text-[clamp(32px,4.6vw,64px)] leading-[1.08] mb-16 max-w-5xl text-pearl-shine">
             UN CERVELLO.
             <br />
-            CHE <em className="italic text-gradient-hero">CONOSCE</em> LA TUA AZIENDA
+            CHE <em className="italic">CONOSCE</em> LA TUA AZIENDA
             <br />
             MEGLIO DI TE.
           </h2>
