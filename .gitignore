@@ -37,3 +37,4 @@ next-env.d.ts
 
 # local
 windsurf_deployment.yaml
+.vercel

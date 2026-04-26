@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import crypto from 'crypto'
 
 export const runtime = 'edge'
+
+async function sha256Short(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input)
+  const buf = await crypto.subtle.digest('SHA-256', data)
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+    .slice(0, 16)
+}
 
 // Rate limiting in-memory (per Run 1 - in Run 2 si sposta su Redis/Supabase)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
@@ -47,7 +55,7 @@ export async function POST(req: NextRequest) {
 
     // Rate limiting
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown'
-    const ipHash = crypto.createHash('sha256').update(ip).digest('hex').slice(0, 16)
+    const ipHash = await sha256Short(ip)
     
     const now = Date.now()
     const record = rateLimitMap.get(ipHash)
