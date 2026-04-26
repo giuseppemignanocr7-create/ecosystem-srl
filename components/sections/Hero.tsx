@@ -35,13 +35,13 @@ export function Hero() {
           LA PIATTAFORMA · AI-NATIVE · MADE IN ITALY
         </motion.div>
 
-        <h1 className="font-serif font-normal text-[clamp(36px,5.2vw,72px)] leading-[1.05] tracking-[-0.03em] mb-10 text-white">
+        <h1 className="font-serif font-normal text-[clamp(32px,4.8vw,64px)] leading-[1.1] tracking-[0.02em] uppercase mb-10 text-pearl-3d">
           <RevealLine delay={1.2}>
-            L&apos;<em className="italic text-gradient-animate">ecosistema</em> definitivo per il tuo business
+            L&apos;<em className="not-italic text-gradient-hero">ECOSISTEMA</em> DEFINITIVO PER IL TUO BUSINESS
           </RevealLine>
-          <RevealLine delay={1.4}>Un solo centro di comando</RevealLine>
+          <RevealLine delay={1.4}>UN SOLO CENTRO DI COMANDO</RevealLine>
           <RevealLine delay={1.6}>
-            <em className="italic text-gradient-animate">Infinite</em> possibilità
+            <em className="not-italic text-gradient-hero">INFINITE</em> POSSIBILITÀ
           </RevealLine>
         </h1>
 
