@@ -7,17 +7,17 @@ import { MagneticButton } from '@/components/motion/MagneticButton'
 
 export function Hero() {
   return (
-    <section className="relative py-12 lg:py-16 px-6 lg:px-12 overflow-hidden bg-gradient-to-b from-[#EEF2FF] via-[#F3F4FF] to-[#EEF6FF]">
+    <section className="relative py-12 lg:py-16 px-6 lg:px-12 overflow-hidden bg-gradient-to-b from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white">
       {/* Subtle decorative bg */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-60"
+        className="absolute inset-0 pointer-events-none opacity-70"
         aria-hidden
         style={{
           background:
-            'radial-gradient(circle at 20% 20%, rgba(124,58,237,0.10), transparent 55%), radial-gradient(circle at 80% 70%, rgba(59,95,232,0.10), transparent 55%)',
+            'radial-gradient(circle at 20% 20%, rgba(124,58,237,0.22), transparent 55%), radial-gradient(circle at 80% 70%, rgba(59,95,232,0.22), transparent 55%)',
         }}
       />
-      <div className="grain" aria-hidden />
+      <div className="grain opacity-40" aria-hidden />
       <ShutterReveal />
 
       <div className="max-w-[1400px] mx-auto w-full relative z-10 text-center">
@@ -35,7 +35,7 @@ export function Hero() {
           LA PIATTAFORMA · AI-NATIVE · MADE IN ITALY
         </motion.div>
 
-        <h1 className="font-serif font-normal text-[clamp(36px,5.2vw,72px)] leading-[1.05] tracking-[-0.03em] mb-10 text-ink-900">
+        <h1 className="font-serif font-normal text-[clamp(36px,5.2vw,72px)] leading-[1.05] tracking-[-0.03em] mb-10 text-white">
           <RevealLine delay={1.2}>
             L&apos;<em className="italic text-gradient-animate">ecosistema</em> definitivo per il tuo business
           </RevealLine>
@@ -53,13 +53,13 @@ export function Hero() {
         >
           <MagneticButton
             href="/contatti"
-            className="shimmer-cta relative inline-flex items-center gap-2 bg-ink-900 text-white px-6 py-3.5 rounded-lg text-sm font-medium hover:bg-brand-navy transition-colors shadow-lg shadow-ink-900/20"
+            className="shimmer-cta relative inline-flex items-center gap-2 bg-brand-violet text-white px-6 py-3.5 rounded-lg text-sm font-medium hover:bg-brand-violet-deep transition-colors shadow-lg shadow-brand-violet/40"
           >
             <span className="relative z-10">Richiedi una demo →</span>
           </MagneticButton>
           <Link
             href="/demo"
-            className="group relative border border-line-strong bg-white/70 backdrop-blur-sm px-6 py-3.5 rounded-lg text-sm font-medium hover:bg-white transition-colors"
+            className="group relative border border-white/20 bg-white/5 backdrop-blur-sm text-white px-6 py-3.5 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors"
           >
             <span className="relative z-10 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
@@ -117,14 +117,14 @@ function ShutterReveal() {
         initial={{ y: 0 }}
         animate={{ y: '-100%' }}
         transition={{ duration: 0.9, ease: [0.7, 0, 0.84, 0], delay: 0.2 }}
-        className="absolute inset-x-0 top-0 h-1/2 bg-paper z-50 pointer-events-none"
+        className="absolute inset-x-0 top-0 h-1/2 bg-brand-navy-3 z-50 pointer-events-none"
         aria-hidden
       />
       <motion.div
         initial={{ y: 0 }}
         animate={{ y: '100%' }}
         transition={{ duration: 0.9, ease: [0.7, 0, 0.84, 0], delay: 0.2 }}
-        className="absolute inset-x-0 bottom-0 h-1/2 bg-paper z-50 pointer-events-none"
+        className="absolute inset-x-0 bottom-0 h-1/2 bg-brand-navy-3 z-50 pointer-events-none"
         aria-hidden
       />
     </>
