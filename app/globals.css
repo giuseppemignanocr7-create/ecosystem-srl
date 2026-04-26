@@ -4,9 +4,10 @@
 
 :root {
   /* === BACKGROUND === */
-  --bg-paper: #FAFAF8;
-  --bg-paper-2: #F4F3EE;
-  --bg-paper-3: #EDEBE4;
+  /* Pearl gray sostituisce i toni warm cream — sfondi neutri freschi */
+  --bg-paper: #F1F3F6;
+  --bg-paper-2: #E9ECF1;
+  --bg-paper-3: #DFE3EA;
   --bg-ink: #0B0B0D;
   --bg-ink-2: #14141A;
   --bg-ink-3: #1D1D26;
@@ -157,7 +158,7 @@ body {
 
 /* Glassmorphism */
 .glass {
-  background: rgba(250, 250, 248, 0.85);
+  background: rgba(241, 243, 246, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--line);

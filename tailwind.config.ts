@@ -12,13 +12,13 @@ const config: Config = {
     extend: {
       colors: {
         paper: {
-          DEFAULT: '#FAFAF8',
-          2: '#F4F3EE',
-          3: '#EDEBE4',
+          DEFAULT: '#F1F3F6',
+          2: '#E9ECF1',
+          3: '#DFE3EA',
         },
-        'bg-paper': '#FAFAF8',
-        'bg-paper-2': '#F4F3EE',
-        'bg-paper-3': '#EDEBE4',
+        'bg-paper': '#F1F3F6',
+        'bg-paper-2': '#E9ECF1',
+        'bg-paper-3': '#DFE3EA',
         'bg-ink': '#0B0B0D',
         'bg-ink-2': '#14141A',
         'bg-ink-3': '#1D1D26',
