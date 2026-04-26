@@ -30,21 +30,8 @@ export function SuiteGrid() {
       <div className="container-custom relative z-10">
         <SectionNumber number="02 —" label="La Piattaforma" />
 
-        <Reveal>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.02] mb-6 max-w-4xl">
-            Costruiamo la suite
-            <br />
-            <em className="italic text-gradient-animate">del tuo settore.</em>
-          </h2>
-        </Reveal>
-
         <Reveal delay={100}>
-          <p className="text-lg text-ink-700 mb-4 max-w-3xl leading-relaxed">
-            Sviluppate con la precisione di sistemi nativi, le nostre suite operano in un
-            ecosistema integrato, un unico DNA tecnologico, garantendo continuità operativa e
-            intelligenza diffusa.
-          </p>
-          <p className="text-lg text-ink-900 mb-12 max-w-3xl leading-relaxed font-medium">
+          <p className="text-lg lg:text-xl text-ink-900 mt-4 mb-12 max-w-3xl leading-relaxed font-medium">
             Scegli la suite più affine al tuo settore o progetta con noi la tua configurazione
             esclusiva.
           </p>
