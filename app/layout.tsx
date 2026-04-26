@@ -6,6 +6,7 @@ import { TopBrand } from '@/components/layout/TopBrand'
 import { Footer } from '@/components/layout/Footer'
 import { CookieBanner } from '@/components/layout/CookieBanner'
 import { CoreMindFloating } from '@/components/coremind/CoreMindFloating'
+import { MobileNav } from '@/components/layout/MobileNav'
 import { LenisProvider } from '@/components/providers/LenisProvider'
 import { ScrollProgress } from '@/components/motion/ScrollProgress'
 
@@ -71,8 +72,9 @@ export default function RootLayout({
         <LenisProvider>
           <ScrollProgress />
           <SideRail />
+          <MobileNav />
           <main
-            className="min-h-screen transition-[padding] duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="min-h-screen pt-14 lg:pt-0 transition-[padding] duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{ paddingRight: 'var(--rail-w, 0px)' }}
           >
             <TopBrand />

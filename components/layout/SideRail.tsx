@@ -12,8 +12,6 @@ import {
   Building2,
   Phone,
   Search,
-  Menu,
-  X,
   ChevronRight,
   ChevronDown,
   ChevronsRight,
@@ -75,7 +73,6 @@ const ITEMS: RailItem[] = [
 export function SideRail() {
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
 
@@ -101,7 +98,6 @@ export function SideRail() {
 
   useEffect(() => {
     setExpandedId(null)
-    setMobileOpen(false)
   }, [pathname])
 
   // Auto-close submenu when collapsing
@@ -342,95 +338,10 @@ export function SideRail() {
         </div>
       </motion.aside>
 
-      {/* MOBILE */}
-      <div className="lg:hidden fixed top-4 right-4 z-50 flex items-center gap-2">
-        <Link
-          href="/"
-          aria-label="Home"
-          className="bg-paper rounded-lg p-1.5 border border-line shadow-sm"
-        >
-          <Logo variant="mark" size={28} />
-        </Link>
-        <button
-          type="button"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="w-10 h-10 rounded-lg bg-paper border border-line-strong flex items-center justify-center shadow-sm"
-          aria-label={mobileOpen ? 'Chiudi menu' : 'Apri menu'}
-        >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {mobileOpen && <MobileMenu onClose={() => setMobileOpen(false)} />}
-      </AnimatePresence>
-
       <AnimatePresence>
         {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
       </AnimatePresence>
     </>
-  )
-}
-
-function MobileMenu({ onClose }: { onClose: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="lg:hidden fixed inset-0 z-40 bg-paper"
-    >
-      <div className="px-6 pt-20 pb-6 h-full overflow-y-auto">
-        <nav className="space-y-2">
-          {ITEMS.map((item) => (
-            <div key={item.id}>
-              {item.href ? (
-                <Link
-                  href={item.href}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-paper-2 font-medium"
-                  onClick={onClose}
-                >
-                  <item.icon size={20} className="text-ink-500" />
-                  <span>{item.label}</span>
-                </Link>
-              ) : (
-                <details className="group">
-                  <summary className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-paper-2 font-medium cursor-pointer list-none">
-                    <item.icon size={20} className="text-ink-500" />
-                    <span>{item.label}</span>
-                    <ChevronRight
-                      size={14}
-                      className="ml-auto group-open:rotate-90 transition-transform"
-                    />
-                  </summary>
-                  <ul className="pl-12 py-1 space-y-1">
-                    {item.submenu?.map((s) => (
-                      <li key={s.href}>
-                        <Link
-                          href={s.href}
-                          className="block px-3 py-2 text-sm text-ink-700 hover:text-ink-900"
-                          onClick={onClose}
-                        >
-                          {s.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-              )}
-            </div>
-          ))}
-
-          <Link
-            href="/contatti"
-            onClick={onClose}
-            className="block mt-4 px-4 py-4 bg-gradient-to-br from-brand-violet to-brand-violet-deep text-white rounded-lg text-center font-medium"
-          >
-            Richiedi una demo →
-          </Link>
-        </nav>
-      </div>
-    </motion.div>
   )
 }
 
