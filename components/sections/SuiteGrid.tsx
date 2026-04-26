@@ -39,16 +39,79 @@ export function SuiteGrid() {
         </Reveal>
 
         <Reveal delay={100}>
-          <p className="text-lg text-ink-700 mb-10 max-w-2xl leading-relaxed">
-            Ecosystem non è un gestionale generico travestito. Ogni suite nasce intorno ai
-            processi reali del settore, in stretta collaborazione con chi quel settore lo vive
-            ogni giorno. Hai esigenze specifiche? <strong>Le costruiamo da zero.</strong>
+          <p className="text-lg text-ink-700 mb-4 max-w-3xl leading-relaxed">
+            Sviluppate con la precisione di sistemi nativi, le nostre suite operano in un
+            ecosistema integrato, un unico DNA tecnologico, garantendo continuità operativa e
+            intelligenza diffusa.
+          </p>
+          <p className="text-lg text-ink-900 mb-12 max-w-3xl leading-relaxed font-medium">
+            Scegli la suite più affine al tuo settore o progetta con noi la tua configurazione
+            esclusiva.
           </p>
         </Reveal>
 
-        {/* CUSTOM-FIRST CTA — protagonista */}
+        {/* GRID DELLE SUITE — card rettangolari 4-col */}
         <Reveal delay={150}>
-          <div className="relative rounded-2xl border border-line-strong bg-gradient-to-br from-bg-ink via-[#0F0F1A] to-[#0A0A12] text-white p-8 lg:p-12 mb-12 overflow-hidden">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-16">
+            {SUITES.map((suite, idx) => {
+              const tag = suite.tag.split('·')[0].trim()
+              const color = SUITE_COLORS[suite.id] ?? '#7C3AED'
+              return (
+                <Link
+                  key={suite.id}
+                  href={`/suite/${suite.id}/`}
+                  className="group relative rounded-xl border border-line bg-paper-2 hover:bg-paper p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg overflow-hidden flex flex-col h-full"
+                  style={{ ['--c' as string]: color }}
+                >
+                  {/* Strip top colorata */}
+                  <span
+                    aria-hidden
+                    className="absolute top-0 left-0 right-0 h-0.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                    style={{ background: color }}
+                  />
+
+                  <div className="flex items-center justify-between mb-3">
+                    <span
+                      className="w-2 h-2 rounded-full transition-transform group-hover:scale-150"
+                      style={{ background: color }}
+                    />
+                    <span className="font-mono text-[10px] tracking-wider text-ink-300">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  <h4 className="font-serif text-lg text-ink-900 mb-2 group-hover:text-[color:var(--c)] transition-colors">
+                    {suite.name}
+                  </h4>
+
+                  <span
+                    className="inline-block w-fit font-mono text-[9px] tracking-[0.16em] uppercase px-2 py-0.5 rounded mb-3"
+                    style={{
+                      color: color,
+                      background: `${color}14`,
+                      border: `1px solid ${color}33`,
+                    }}
+                  >
+                    {tag}
+                  </span>
+
+                  <p className="text-xs text-ink-500 leading-relaxed flex-1">
+                    {suite.description.split('.')[0]}.
+                  </p>
+
+                  <ArrowRight
+                    size={14}
+                    className="text-ink-300 group-hover:text-[color:var(--c)] group-hover:translate-x-1 transition-all mt-3 self-end"
+                  />
+                </Link>
+              )
+            })}
+          </div>
+        </Reveal>
+
+        {/* SUITE SU MISURA — sfondo navy come hero */}
+        <Reveal delay={250}>
+          <div className="relative rounded-2xl bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white p-8 lg:p-12 mb-6 overflow-hidden">
             <div
               className="absolute -top-20 -right-20 w-96 h-96 rounded-full opacity-30 pointer-events-none"
               style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.5) 0%, transparent 70%)' }}
@@ -145,80 +208,6 @@ export function SuiteGrid() {
                 </div>
               </div>
             </div>
-          </div>
-        </Reveal>
-
-        {/* COMPACT LIST — 13 suite */}
-        <Reveal delay={250}>
-          <div className="flex items-baseline justify-between mb-5 flex-wrap gap-3">
-            <h3 className="font-serif text-2xl text-ink-900">Suite già disponibili</h3>
-            <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-ink-400">
-              {SUITES.length} verticali · stessa piattaforma
-            </span>
-          </div>
-        </Reveal>
-
-        <Reveal delay={300}>
-          <div className="rounded-xl border border-line bg-paper-2 divide-y divide-line overflow-hidden">
-            {SUITES.map((suite, idx) => {
-              const tag = suite.tag.split('·')[0].trim()
-              const color = SUITE_COLORS[suite.id] ?? '#7C3AED'
-              return (
-                <Link
-                  key={suite.id}
-                  href={`/suite/${suite.id}/`}
-                  className="group relative flex items-center gap-4 px-4 sm:px-6 py-3.5 hover:bg-paper transition-colors"
-                >
-                  {/* Strip colorata sulla sinistra al hover */}
-                  <span
-                    aria-hidden
-                    className="absolute left-0 top-0 bottom-0 w-1 origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-300"
-                    style={{ background: color }}
-                  />
-
-                  {/* Numero + dot colorato */}
-                  <span className="flex items-center gap-2 w-12 shrink-0">
-                    <span
-                      className="w-2 h-2 rounded-full shrink-0 transition-transform group-hover:scale-125"
-                      style={{ background: color }}
-                    />
-                    <span className="font-mono text-[10px] tracking-wider text-ink-300">
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                  </span>
-
-                  <span
-                    className="font-serif text-lg text-ink-900 transition-colors min-w-[140px] sm:min-w-[180px]"
-                    style={{ ['--c' as string]: color }}
-                  >
-                    <span className="group-hover:text-[color:var(--c)] transition-colors">
-                      {suite.name}
-                    </span>
-                  </span>
-
-                  <span
-                    className="hidden sm:inline font-mono text-[10px] tracking-[0.16em] uppercase px-2 py-0.5 rounded transition-colors"
-                    style={{
-                      color: color,
-                      background: `${color}14`,
-                      border: `1px solid ${color}33`,
-                    }}
-                  >
-                    {tag}
-                  </span>
-
-                  <span className="flex-1 hidden md:block text-sm text-ink-500 truncate">
-                    {suite.description.split('.')[0]}
-                  </span>
-
-                  <ArrowRight
-                    size={14}
-                    className="text-ink-300 group-hover:translate-x-0.5 transition-all shrink-0"
-                    style={{ ['--c' as string]: color }}
-                  />
-                </Link>
-              )
-            })}
           </div>
         </Reveal>
 
