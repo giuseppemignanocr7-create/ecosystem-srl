@@ -47,12 +47,14 @@ export function CoreMindFlagship() {
         <SectionNumber number="01 —" label="INTELLIGENCE" light />
         
         <Reveal>
-          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(34px,5vw,68px)] leading-[1.1] mb-16 max-w-5xl text-pearl-shine">
-            Un cervello.
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mb-16 max-w-5xl text-pearl-shine">
+            Costruito intorno a CoreMind, l&apos;intelligenza nativa
             <br />
-            Che conosce la tua azienda
+            che impara dai tuoi processi e li trasforma in produttività.
             <br />
-            meglio di te.
+            <span className="block mt-4">
+              Un ecosistema unico. Accesso immediato. Potenziale infinito.
+            </span>
           </h2>
         </Reveal>
         
