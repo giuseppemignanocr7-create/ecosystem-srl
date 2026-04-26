@@ -18,17 +18,16 @@ export function DemoPreview() {
             
             <Reveal delay={100}>
               <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mb-6">
-                È il prodotto vero.
+                Prova la tua ECO
                 <br />
-                <em className="text-accent-tech not-italic">Che lo tocchi tu.</em>
+                <em className="text-accent-tech not-italic">un tocco, infinite possibilità.</em>
               </h2>
             </Reveal>
             
             <Reveal delay={200}>
               <p className="text-lg text-ink-500 mb-8 max-w-xl mx-auto">
-                Accedi alla sandbox interattiva. Quattro suite in versione demo, 
-                dati finti ma funzioni reali. CoreMind attivo. Cinque minuti 
-                e capisci esattamente cosa fa questa piattaforma.
+                Accedi alla sandbox interattiva. Quattro suite in versione demo,
+                dati finti ma funzioni reali. CoreMind attivo.
               </p>
             </Reveal>
             
