@@ -32,15 +32,13 @@ export function SuiteGrid() {
         <SectionNumber number="02 —" label="La Piattaforma" />
 
         <Reveal delay={100}>
-          <p className="text-lg text-ink-700 mt-4 mb-4 max-w-3xl leading-relaxed">
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-12 max-w-5xl text-pearl-shine-dark">
             Sviluppate con la precisione di sistemi nativi, le nostre suite operano in un
-            ecosistema integrato, un unico DNA tecnologico, garantendo continuità operativa e
-            intelligenza diffusa.
-          </p>
-          <p className="text-lg lg:text-xl text-ink-900 mb-12 max-w-3xl leading-relaxed font-medium">
-            Scegli la suite più affine al tuo settore o progetta con noi la tua configurazione
-            esclusiva.
-          </p>
+            ecosistema integrato, un unico DNA tecnologico,
+            <span className="block mt-3">
+              garantendo continuità operativa e intelligenza diffusa.
+            </span>
+          </h2>
         </Reveal>
 
         {/* GRID DELLE SUITE — card rettangolari 4-col */}
@@ -50,53 +48,90 @@ export function SuiteGrid() {
               const tag = suite.tag.split('·')[0].trim()
               const color = SUITE_COLORS[suite.id] ?? '#7C3AED'
               return (
-                <Link
+                <motion.div
                   key={suite.id}
-                  href={`/suite/${suite.id}/`}
-                  className="group relative rounded-xl border border-line bg-paper hover:bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-md hover:border-line-strong overflow-hidden flex flex-col h-full"
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -4 }}
                   style={{ ['--c' as string]: color }}
                 >
-                  {/* Strip top — neutra a riposo, colorata su hover */}
-                  <span
-                    aria-hidden
-                    className="absolute top-0 left-0 right-0 h-0.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
-                    style={{ background: color }}
-                  />
-
-                  <div className="relative flex items-center justify-between mb-3">
-                    <span
-                      className="w-2 h-2 rounded-full transition-transform group-hover:scale-125"
-                      style={{ background: color }}
-                    />
-                    <span className="font-mono text-[10px] tracking-wider text-ink-300">
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                  </div>
-
-                  <h4 className="relative font-serif text-lg text-ink-900 mb-2 group-hover:text-[color:var(--c)] transition-colors">
-                    {suite.name}
-                  </h4>
-
-                  <span
-                    className="relative inline-block w-fit font-mono text-[9px] tracking-[0.16em] uppercase px-2 py-0.5 rounded mb-3"
-                    style={{
-                      color: color,
-                      background: `${color}10`,
-                      border: `1px solid ${color}26`,
-                    }}
+                  <Link
+                    href={`/suite/${suite.id}/`}
+                    className="group relative block rounded-xl border border-ink-200/40 bg-gradient-to-br from-[#E5E7EB] via-[#D8DBE2] to-[#C9CDD6] p-5 transition-shadow hover:shadow-xl overflow-hidden h-full flex flex-col"
                   >
-                    {tag}
-                  </span>
+                    {/* Shimmer sweep on hover */}
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                      style={{
+                        background:
+                          'linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)',
+                        backgroundSize: '250% 100%',
+                        animation: 'shimmer-sweep 2s linear infinite',
+                      }}
+                    />
 
-                  <p className="relative text-xs text-ink-500 leading-relaxed flex-1">
-                    {suite.description.split('.')[0]}.
-                  </p>
+                    {/* Strip top colorata sempre visibile, scala su hover */}
+                    <span
+                      aria-hidden
+                      className="absolute top-0 left-0 right-0 h-[3px] origin-left scale-x-100 transition-all duration-500 group-hover:h-[6px]"
+                      style={{ background: `linear-gradient(90deg, ${color}, ${color}55)` }}
+                    />
 
-                  <ArrowRight
-                    size={14}
-                    className="relative text-ink-300 group-hover:text-[color:var(--c)] group-hover:translate-x-1 transition-all mt-3 self-end"
-                  />
-                </Link>
+                    {/* Glow blob in basso a destra che pulsa */}
+                    <motion.span
+                      aria-hidden
+                      className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-2xl pointer-events-none"
+                      style={{ background: color }}
+                      animate={{ opacity: [0.12, 0.25, 0.12], scale: [1, 1.15, 1] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.2 }}
+                    />
+
+                    <div className="relative flex items-center justify-between mb-3">
+                      <motion.span
+                        className="w-2 h-2 rounded-full"
+                        style={{ background: color }}
+                        animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
+                        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.15 }}
+                      />
+                      <span className="font-mono text-[10px] tracking-wider text-ink-400">
+                        {String(idx + 1).padStart(2, '0')}
+                      </span>
+                    </div>
+
+                    <h4 className="relative font-serif text-lg text-ink-900 mb-2 group-hover:text-[color:var(--c)] transition-colors">
+                      {suite.name}
+                    </h4>
+
+                    <span
+                      className="relative inline-block w-fit font-mono text-[9px] tracking-[0.16em] uppercase px-2 py-0.5 rounded mb-3 backdrop-blur-sm"
+                      style={{
+                        color: color,
+                        background: 'rgba(255,255,255,0.55)',
+                        border: `1px solid ${color}40`,
+                      }}
+                    >
+                      {tag}
+                    </span>
+
+                    <p className="relative text-xs text-ink-700 leading-relaxed flex-1">
+                      {suite.description.split('.')[0]}.
+                    </p>
+
+                    <motion.div
+                      className="relative mt-3 self-end"
+                      animate={{ x: [0, 3, 0] }}
+                      transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.1 }}
+                    >
+                      <ArrowRight
+                        size={14}
+                        className="text-ink-500 group-hover:text-[color:var(--c)] transition-colors"
+                      />
+                    </motion.div>
+                  </Link>
+                </motion.div>
               )
             })}
           </div>
@@ -116,17 +151,12 @@ export function SuiteGrid() {
 
             <div className="relative grid lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-brand-violet mb-5 px-3 py-1.5 rounded-full bg-brand-violet/10 border border-brand-violet/30">
+                <div className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-brand-violet mb-6 px-3 py-1.5 rounded-full bg-brand-violet/10 border border-brand-violet/30">
                   <Wand2 size={12} /> SUITE SU MISURA
                 </div>
-                <h3 className="font-serif text-3xl lg:text-5xl leading-[1.05] mb-5">
-                  Il tuo settore
-                  <br />
-                  <em className="italic text-brand-violet">non è in lista?</em>
-                </h3>
-                <p className="text-base lg:text-lg text-white mb-8 leading-relaxed max-w-lg font-medium">
+                <h3 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mb-8 max-w-2xl text-pearl-shine">
                   Progetta con noi la tua suite.
-                </p>
+                </h3>
 
                 {/* Mini step pillole: Discovery / Build / AI custom */}
                 <div className="grid sm:grid-cols-3 gap-3 mb-8">

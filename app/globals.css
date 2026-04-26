@@ -234,6 +234,12 @@ body {
   100% { transform: translateX(200%); }
 }
 
+/* Shimmer-sweep per card grigie hover (background-position) */
+@keyframes shimmer-sweep {
+  0% { background-position: 200% 50%; }
+  100% { background-position: -100% 50%; }
+}
+
 .shimmer-cta {
   position: relative;
   overflow: hidden;
@@ -280,6 +286,35 @@ body {
 
 /* em → nessun accento colorato, eredita dal parent */
 .text-pearl-shine em {
+  font-style: italic;
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: none;
+}
+
+/* Pearl shine variante per sfondi CHIARI: gradient grigio scuro→medio
+   per testo grande tipografico su bg-paper */
+.text-pearl-shine-dark {
+  background: linear-gradient(
+    180deg,
+    #2A2F3A 0%,
+    #4A5161 35%,
+    #6B7280 70%,
+    #9AA0AC 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.6))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+  letter-spacing: -0.005em;
+}
+
+.text-pearl-shine-dark em {
   font-style: italic;
   background: inherit;
   -webkit-background-clip: text;
