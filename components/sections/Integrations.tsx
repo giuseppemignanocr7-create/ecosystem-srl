@@ -14,14 +14,6 @@ export function Integrations() {
       <div className="container-custom">
         <SectionNumber number="04 —" label="Connessioni" />
         
-        <Reveal>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.05] mb-6 max-w-4xl">
-            Parla con tutto
-            <br />
-            <em className="text-accent-tech not-italic">quello che già usi.</em>
-          </h2>
-        </Reveal>
-        
         <Reveal delay={100}>
           <p className="text-lg text-ink-500 mb-12 max-w-2xl">
             Ecosystem non ti chiede di abbandonare i tuoi strumenti. 

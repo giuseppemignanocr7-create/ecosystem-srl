@@ -46,48 +46,34 @@ export function SuiteGrid() {
         {/* GRID DELLE SUITE — card rettangolari 4-col */}
         <Reveal delay={150}>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-16">
-            {SUITES.map((suite, idx) => {
+            {SUITES.filter((s) => s.id !== 'archon-os').map((suite, idx) => {
               const tag = suite.tag.split('·')[0].trim()
               const color = SUITE_COLORS[suite.id] ?? '#7C3AED'
               return (
                 <Link
                   key={suite.id}
                   href={`/suite/${suite.id}/`}
-                  className="group relative rounded-xl border p-5 transition-all hover:-translate-y-1 hover:shadow-xl overflow-hidden flex flex-col h-full"
-                  style={{
-                    ['--c' as string]: color,
-                    background: `linear-gradient(135deg, ${color}14 0%, ${color}08 60%, ${color}03 100%)`,
-                    borderColor: `${color}40`,
-                    boxShadow: `0 1px 0 ${color}20 inset`,
-                  }}
+                  className="group relative rounded-xl border border-line bg-paper hover:bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-md hover:border-line-strong overflow-hidden flex flex-col h-full"
+                  style={{ ['--c' as string]: color }}
                 >
-                  {/* Strip top colorata */}
+                  {/* Strip top — neutra a riposo, colorata su hover */}
                   <span
                     aria-hidden
-                    className="absolute top-0 left-0 right-0 h-1 origin-left transition-transform duration-300"
-                    style={{ background: color }}
-                  />
-                  {/* Soft glow blob in basso a destra */}
-                  <span
-                    aria-hidden
-                    className="absolute -bottom-12 -right-12 w-32 h-32 rounded-full opacity-40 blur-2xl pointer-events-none transition-opacity group-hover:opacity-70"
+                    className="absolute top-0 left-0 right-0 h-0.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
                     style={{ background: color }}
                   />
 
                   <div className="relative flex items-center justify-between mb-3">
                     <span
-                      className="w-2.5 h-2.5 rounded-full transition-transform group-hover:scale-150 shadow"
-                      style={{ background: color, boxShadow: `0 0 0 3px ${color}25` }}
+                      className="w-2 h-2 rounded-full transition-transform group-hover:scale-125"
+                      style={{ background: color }}
                     />
-                    <span className="font-mono text-[10px] tracking-wider text-ink-400">
+                    <span className="font-mono text-[10px] tracking-wider text-ink-300">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                   </div>
 
-                  <h4
-                    className="relative font-serif text-lg mb-2 transition-colors"
-                    style={{ color: color }}
-                  >
+                  <h4 className="relative font-serif text-lg text-ink-900 mb-2 group-hover:text-[color:var(--c)] transition-colors">
                     {suite.name}
                   </h4>
 
@@ -95,21 +81,20 @@ export function SuiteGrid() {
                     className="relative inline-block w-fit font-mono text-[9px] tracking-[0.16em] uppercase px-2 py-0.5 rounded mb-3"
                     style={{
                       color: color,
-                      background: `${color}1F`,
-                      border: `1px solid ${color}55`,
+                      background: `${color}10`,
+                      border: `1px solid ${color}26`,
                     }}
                   >
                     {tag}
                   </span>
 
-                  <p className="relative text-xs text-ink-700 leading-relaxed flex-1">
+                  <p className="relative text-xs text-ink-500 leading-relaxed flex-1">
                     {suite.description.split('.')[0]}.
                   </p>
 
                   <ArrowRight
                     size={14}
-                    className="relative group-hover:translate-x-1 transition-all mt-3 self-end"
-                    style={{ color }}
+                    className="relative text-ink-300 group-hover:text-[color:var(--c)] group-hover:translate-x-1 transition-all mt-3 self-end"
                   />
                 </Link>
               )
