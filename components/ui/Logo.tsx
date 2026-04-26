@@ -57,27 +57,23 @@ export function Logo({
   )
 
   if (isMark) {
-    // Crop just the "E" glyph: zoom 4.5x and shift left
+    // Clean vector "E" mark — never gets cut off, always crisp
     return (
       <span
-        className={`relative inline-block overflow-hidden ${className}`}
-        style={{ width: size, height: size }}
+        className={`inline-flex items-center justify-center font-serif font-bold leading-none select-none ${className}`}
+        style={{
+          width: size,
+          height: size,
+          fontSize: Math.round(size * 0.65),
+          background: 'linear-gradient(135deg, #1A2750 0%, #3B5FE8 50%, #7C3AED 100%)',
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          color: 'transparent',
+        }}
         aria-label="Ecosystem"
       >
-        <Image
-          src="/brand/ecosystem-logo.jpg"
-          alt="Ecosystem"
-          width={Math.round(size * aspectFull * 4.5)}
-          height={Math.round(size * 4.5)}
-          priority={priority}
-          unoptimized
-          style={{
-            position: 'absolute',
-            left: `-${Math.round(size * 0.55)}px`,
-            top: `-${Math.round(size * 1.4)}px`,
-            maxWidth: 'none',
-          }}
-        />
+        E
       </span>
     )
   }
