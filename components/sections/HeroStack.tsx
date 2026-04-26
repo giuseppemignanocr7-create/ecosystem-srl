@@ -1,14 +1,7 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-  AnimatePresence,
-} from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Typewriter } from '@/components/motion/Typewriter'
 import {
   Brain,
@@ -26,75 +19,109 @@ import {
   CreditCard,
 } from 'lucide-react'
 
+const SLIDES = [
+  { key: 'build', dark: false, render: () => <BuildSuiteContent />, label: 'BuildSuite' },
+  { key: 'coremind', dark: true, render: () => <CoreMindContent />, label: 'CoreMind' },
+  { key: 'pos', dark: false, render: () => <POSContent />, label: 'RetailSuite POS' },
+]
+
+const AUTO_INTERVAL = 5500
+
 export function HeroStack() {
-  const container = useRef<HTMLDivElement>(null)
-  const { scrollY } = useScroll()
-  const yFront = useTransform(scrollY, [0, 800], [0, -80])
-  const yMid = useTransform(scrollY, [0, 800], [0, 40])
-  const yBack = useTransform(scrollY, [0, 800], [0, 120])
-
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [3, -3]), {
-    stiffness: 80,
-    damping: 20,
-  })
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-3, 3]), {
-    stiffness: 80,
-    damping: 20,
-  })
-
-  function handleMouseMove(e: React.MouseEvent) {
-    if (!container.current) return
-    const rect = container.current.getBoundingClientRect()
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
-  }
-
+  const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(false)
   const ease = [0.16, 1, 0.3, 1] as const
+
+  // Auto-advance
+  useEffect(() => {
+    if (paused) return
+    const t = setInterval(() => {
+      setActive((i) => (i + 1) % SLIDES.length)
+    }, AUTO_INTERVAL)
+    return () => clearInterval(t)
+  }, [paused])
 
   return (
     <div
-      ref={container}
-      onMouseMove={handleMouseMove}
-      style={{ perspective: 2400 }}
-      className="relative w-full h-[420px] sm:h-[520px] lg:h-[640px] overflow-hidden sm:overflow-visible"
+      className="relative w-full"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
-      <motion.div
-        style={{ y: yBack, rotateX, rotateY }}
-        initial={{ opacity: 0, x: -60, rotate: -8 }}
-        animate={{ opacity: 0.92, x: 0, rotate: -3 }}
-        transition={{ duration: 1.2, ease, delay: 1.4 }}
-        className="absolute left-0 bottom-0 w-[280px] lg:w-[420px] z-10"
-      >
-        <Window>
-          <POSContent />
-        </Window>
-      </motion.div>
+      {/* Track: tutte le card sempre renderizzate (animazioni interne mai interrotte) */}
+      <div className="relative overflow-hidden rounded-2xl">
+        <motion.div
+          className="flex"
+          animate={{ x: `-${active * 100}%` }}
+          transition={{ duration: 0.8, ease }}
+        >
+          {SLIDES.map((slide, i) => (
+            <motion.div
+              key={slide.key}
+              className="w-full shrink-0 px-2"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.6 + i * 0.15, ease }}
+            >
+              <Window dark={slide.dark}>{slide.render()}</Window>
+            </motion.div>
+          ))}
+        </motion.div>
 
-      <motion.div
-        style={{ y: yMid, rotateX, rotateY }}
-        initial={{ opacity: 0, x: 60, rotate: 10 }}
-        animate={{ opacity: 1, x: 0, rotate: 2.5 }}
-        transition={{ duration: 1.1, ease, delay: 1.2 }}
-        className="absolute right-0 top-[180px] lg:top-[260px] w-[300px] lg:w-[440px] z-20"
-      >
-        <Window dark>
-          <CoreMindContent />
-        </Window>
-      </motion.div>
+        {/* Gradient edges per hint "c'è altro" */}
+        <div className="absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-paper to-transparent pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-paper to-transparent pointer-events-none" />
+      </div>
 
-      <motion.div
-        style={{ y: yFront, rotateX, rotateY }}
-        initial={{ opacity: 0, y: 60, rotate: -6 }}
-        animate={{ opacity: 1, y: 0, rotate: -1.5 }}
-        transition={{ duration: 1.3, ease, delay: 1.0 }}
-        className="absolute left-[20px] lg:left-[60px] top-0 w-[320px] lg:w-[520px] z-30"
-      >
-        <Window>
-          <BuildSuiteContent />
-        </Window>
-      </motion.div>
+      {/* Controls: arrow + dots + labels */}
+      <div className="flex items-center justify-between mt-5 px-2 gap-4">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActive((i) => (i - 1 + SLIDES.length) % SLIDES.length)}
+            className="w-8 h-8 rounded-full border border-line bg-paper hover:bg-paper-2 flex items-center justify-center text-ink-500 hover:text-brand-violet transition-colors"
+            aria-label="Slide precedente"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            onClick={() => setActive((i) => (i + 1) % SLIDES.length)}
+            className="w-8 h-8 rounded-full border border-line bg-paper hover:bg-paper-2 flex items-center justify-center text-ink-500 hover:text-brand-violet transition-colors"
+            aria-label="Slide successiva"
+          >
+            →
+          </button>
+        </div>
+
+        <div className="flex items-center gap-1.5 flex-1 justify-center">
+          {SLIDES.map((s, i) => (
+            <button
+              type="button"
+              key={s.key}
+              onClick={() => setActive(i)}
+              className="group flex items-center gap-2 py-1"
+              aria-label={`Vai a ${s.label}`}
+            >
+              <span
+                className={`h-1.5 rounded-full transition-all ${
+                  active === i ? 'w-8 bg-brand-violet' : 'w-1.5 bg-ink-300 group-hover:bg-ink-500'
+                }`}
+              />
+              <span
+                className={`font-mono text-[9px] tracking-[0.14em] uppercase transition-colors ${
+                  active === i ? 'text-ink-900' : 'text-ink-400 group-hover:text-ink-700'
+                }`}
+              >
+                {s.label}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <div className="font-mono text-[9px] tracking-[0.14em] uppercase text-ink-400 tabular-nums w-14 text-right">
+          {String(active + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
+        </div>
+      </div>
     </div>
   )
 }
