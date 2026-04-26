@@ -257,25 +257,35 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* Headline bilanciato: pearl luminoso, ombra singola di profondità,
-   soft violet glow dietro per staccare dal navy senza perdere contrasto */
+/* Headline pearl metallico: gradient verticale bianco-pearl-gray per riflesso
+   naturale, ombra singola di profondità, NO accenti colorati */
 .text-pearl-shine {
-  color: #E6EAF2;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.08),
-    0 2px 6px rgba(0, 0, 0, 0.55),
-    0 0 40px rgba(124, 58, 237, 0.25);
-  letter-spacing: -0.005em;
-}
-
-/* Accent word: gradient viola→blu soft su <em> */
-.text-pearl-shine em {
-  background: linear-gradient(90deg, #C4B5FD, #A78BFA, #93C5FD);
+  background: linear-gradient(
+    180deg,
+    #FFFFFF 0%,
+    #EFF2F7 35%,
+    #C9CED8 70%,
+    #8F96A3 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  filter: drop-shadow(0 2px 8px rgba(124, 58, 237, 0.4));
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.15))
+    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.08));
+  letter-spacing: -0.005em;
+}
+
+/* em → nessun accento colorato, eredita dal parent */
+.text-pearl-shine em {
+  font-style: italic;
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: none;
 }
 
 /* Legacy hero gradient kept for compatibility */
