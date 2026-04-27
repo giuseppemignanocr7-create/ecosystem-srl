@@ -23,9 +23,9 @@ export function MobileNav() {
 
   return (
     <>
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 bg-paper/80 backdrop-blur-xl border-b border-line">
-        <Link href="/" aria-label="Ecosystem — Home" className="flex items-center">
-          <Logo variant="light" size={100} priority />
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 bg-paper/85 backdrop-blur-xl border-b border-line">
+        <Link href="/" aria-label="Ecosystem — Home" className="flex items-center max-h-9 overflow-hidden">
+          <Logo variant="light" size={28} priority />
         </Link>
         <button
           type="button"
