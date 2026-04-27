@@ -132,7 +132,9 @@ export function SideRail() {
         <motion.button
           type="button"
           onClick={() => setCollapsed((c) => !c)}
-          className="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-12 rounded-xl flex items-center justify-center z-10 shadow-lg shadow-brand-violet/30"
+          className={`absolute top-4 w-12 h-12 rounded-xl flex items-center justify-center z-10 shadow-lg shadow-brand-violet/30 ${
+            collapsed ? 'left-1/2 -translate-x-1/2' : 'right-4'
+          }`}
           style={{
             background: 'linear-gradient(135deg, #3B5FE8 0%, #1A2750 100%)',
           }}
