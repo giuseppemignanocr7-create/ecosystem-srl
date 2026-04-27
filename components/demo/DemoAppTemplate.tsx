@@ -12,8 +12,12 @@ import {
   Plus,
   Download,
   RefreshCw,
+  Filter,
+  MoreHorizontal,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react'
+import { getModulePreset, type ModulePreset } from './module-presets'
 
 export type DemoSuiteConfig = {
   id: 'buildsuite' | 'legalmind' | 'foodsuite' | 'retailsuite'
@@ -170,176 +174,16 @@ export function DemoAppTemplate({ config }: { config: DemoSuiteConfig }) {
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 lg:p-8">
-          <div className="flex items-end justify-between mb-6 flex-wrap gap-4">
-            <div>
-              <div
-                className="font-mono text-xs tracking-[0.2em] uppercase mb-2"
-                style={{ color: config.accent }}
-              >
-                DASHBOARD
-              </div>
-              <h1 className="font-serif text-3xl lg:text-4xl">Panoramica · {config.name}</h1>
-            </div>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm border ${
-                  isDark ? 'border-white/10 hover:bg-white/5' : 'border-line hover:bg-paper-2'
-                }`}
-              >
-                <Download size={14} /> Esporta
-              </button>
-              <button
-                type="button"
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm border ${
-                  isDark ? 'border-white/10 hover:bg-white/5' : 'border-line hover:bg-paper-2'
-                }`}
-              >
-                <RefreshCw size={14} /> Aggiorna
-              </button>
-              <button
-                type="button"
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-white font-medium"
-                style={{ background: config.accent }}
-              >
-                <Plus size={14} /> Aggiungi
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-8">
-            {config.kpis.map((kpi, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                className={`p-4 rounded-xl border ${
-                  isDark ? 'border-white/5 bg-white/[0.02]' : 'border-line bg-paper'
-                }`}
-              >
-                <div
-                  className={`font-mono text-[9px] tracking-[0.16em] uppercase mb-2 ${
-                    isDark ? 'text-white/40' : 'text-ink-400'
-                  }`}
-                >
-                  {kpi.label}
-                </div>
-                <div className="font-serif text-2xl mb-1" style={{ color: config.accent }}>
-                  {kpi.value}
-                </div>
-                {kpi.delta && (
-                  <div
-                    className={`text-[10px] font-mono ${
-                      kpi.trend === 'up'
-                        ? 'text-success'
-                        : kpi.trend === 'down'
-                          ? 'text-danger'
-                          : isDark
-                            ? 'text-white/50'
-                            : 'text-ink-500'
-                    }`}
-                  >
-                    {kpi.delta}
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mb-8">
-            <div
-              className={`flex items-center gap-2 mb-3 font-mono text-xs tracking-[0.18em] uppercase ${
-                isDark ? 'text-white/50' : 'text-ink-400'
-              }`}
-            >
-              <span style={{ color: config.accent }}>⚡</span> AZIONI RAPIDE
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-6 gap-2.5">
-              {config.quickActions.map((qa, i) => {
-                const Icon = qa.icon
-                return (
-                  <button
-                    type="button"
-                    key={i}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm transition-colors ${
-                      isDark
-                        ? 'border-white/5 bg-white/[0.02] hover:bg-white/5'
-                        : 'border-line bg-paper hover:bg-paper-2'
-                    }`}
-                  >
-                    <Icon size={16} />
-                    {qa.label}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <div
-            className={`rounded-xl border overflow-hidden mb-6 ${
-              isDark ? 'border-white/5 bg-white/[0.02]' : 'border-line bg-paper'
-            }`}
-          >
-            <div className={`p-4 border-b ${isDark ? 'border-white/5' : 'border-line'}`}>
-              <h3 className="font-serif text-lg">{config.table.title}</h3>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr
-                    className={isDark ? 'border-b border-white/5' : 'border-b border-line'}
-                  >
-                    {config.table.columns.map((col, i) => (
-                      <th
-                        key={i}
-                        className={`text-left px-4 py-2.5 font-mono text-[10px] tracking-[0.16em] uppercase font-medium ${
-                          isDark ? 'text-white/40' : 'text-ink-400'
-                        }`}
-                      >
-                        {col}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {config.table.rows.map((row, i) => (
-                    <motion.tr
-                      key={i}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: i * 0.05 }}
-                      className={`${
-                        isDark
-                          ? 'border-b border-white/5 hover:bg-white/[0.02]'
-                          : 'border-b border-line hover:bg-paper-2'
-                      } transition-colors`}
-                    >
-                      {row.map((cell, j) => (
-                        <td key={j} className="px-4 py-3 whitespace-nowrap">
-                          {cell}
-                        </td>
-                      ))}
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-4">
-            {config.panels.map((panel, i) => (
-              <div
-                key={i}
-                className={`p-5 rounded-xl border ${
-                  isDark ? 'border-white/5 bg-white/[0.02]' : 'border-line bg-paper'
-                }`}
-              >
-                <h3 className="font-serif text-lg mb-3">{panel.title}</h3>
-                {panel.content}
-              </div>
-            ))}
-          </div>
+          {activeNav === config.sidebar[0].id ? (
+            <DashboardView config={config} isDark={isDark} />
+          ) : (
+            <ModuleView
+              suiteId={config.id}
+              accent={config.accent}
+              isDark={isDark}
+              navItem={config.sidebar.find((s) => s.id === activeNav)!}
+            />
+          )}
 
           <div className="fixed bottom-6 right-6 lg:right-24 z-20">
             <Link
@@ -350,6 +194,386 @@ export function DemoAppTemplate({ config }: { config: DemoSuiteConfig }) {
             </Link>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+// ═════════════════════════ DASHBOARD VIEW ═════════════════════════
+function DashboardView({
+  config,
+  isDark,
+}: {
+  config: DemoSuiteConfig
+  isDark: boolean
+}) {
+  return (
+    <>
+      <div className="flex items-end justify-between mb-6 flex-wrap gap-4">
+        <div>
+          <div
+            className="font-mono text-xs tracking-[0.2em] uppercase mb-2"
+            style={{ color: config.accent }}
+          >
+            DASHBOARD
+          </div>
+          <h1 className="font-serif text-3xl lg:text-4xl">Panoramica · {config.name}</h1>
+        </div>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm border ${
+              isDark ? 'border-white/10 hover:bg-white/5' : 'border-line hover:bg-paper-2'
+            }`}
+          >
+            <Download size={14} /> Esporta
+          </button>
+          <button
+            type="button"
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm border ${
+              isDark ? 'border-white/10 hover:bg-white/5' : 'border-line hover:bg-paper-2'
+            }`}
+          >
+            <RefreshCw size={14} /> Aggiorna
+          </button>
+          <button
+            type="button"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-white font-medium"
+            style={{ background: config.accent }}
+          >
+            <Plus size={14} /> Aggiungi
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-8">
+        {config.kpis.map((kpi, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+            className={`p-4 rounded-xl border ${
+              isDark ? 'border-white/5 bg-white/[0.02]' : 'border-line bg-paper'
+            }`}
+          >
+            <div
+              className={`font-mono text-[9px] tracking-[0.16em] uppercase mb-2 ${
+                isDark ? 'text-white/40' : 'text-ink-400'
+              }`}
+            >
+              {kpi.label}
+            </div>
+            <div className="font-serif text-2xl mb-1" style={{ color: config.accent }}>
+              {kpi.value}
+            </div>
+            {kpi.delta && (
+              <div
+                className={`text-[10px] font-mono ${
+                  kpi.trend === 'up'
+                    ? 'text-success'
+                    : kpi.trend === 'down'
+                      ? 'text-danger'
+                      : isDark
+                        ? 'text-white/50'
+                        : 'text-ink-500'
+                }`}
+              >
+                {kpi.delta}
+              </div>
+            )}
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="mb-8">
+        <div
+          className={`flex items-center gap-2 mb-3 font-mono text-xs tracking-[0.18em] uppercase ${
+            isDark ? 'text-white/50' : 'text-ink-400'
+          }`}
+        >
+          <span style={{ color: config.accent }}>⚡</span> AZIONI RAPIDE
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-2.5">
+          {config.quickActions.map((qa, i) => {
+            const Icon = qa.icon
+            return (
+              <button
+                type="button"
+                key={i}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm transition-colors ${
+                  isDark
+                    ? 'border-white/5 bg-white/[0.02] hover:bg-white/5'
+                    : 'border-line bg-paper hover:bg-paper-2'
+                }`}
+              >
+                <Icon size={16} />
+                {qa.label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <DataTableCard
+        title={config.table.title}
+        columns={config.table.columns}
+        rows={config.table.rows}
+        isDark={isDark}
+      />
+
+      <div className="grid lg:grid-cols-2 gap-4">
+        {config.panels.map((panel, i) => (
+          <div
+            key={i}
+            className={`p-5 rounded-xl border ${
+              isDark ? 'border-white/5 bg-white/[0.02]' : 'border-line bg-paper'
+            }`}
+          >
+            <h3 className="font-serif text-lg mb-3">{panel.title}</h3>
+            {panel.content}
+          </div>
+        ))}
+      </div>
+    </>
+  )
+}
+
+// ═════════════════════════ MODULE VIEW ═════════════════════════
+function ModuleView({
+  suiteId,
+  accent,
+  isDark,
+  navItem,
+}: {
+  suiteId: string
+  accent: string
+  isDark: boolean
+  navItem: { id: string; label: string; sublabel?: string }
+}) {
+  const preset: ModulePreset = getModulePreset(suiteId, navItem.id, navItem.label, navItem.sublabel)
+
+  return (
+    <>
+      {/* HEADER */}
+      <div className="flex items-end justify-between mb-6 flex-wrap gap-4">
+        <div>
+          <div
+            className="font-mono text-xs tracking-[0.2em] uppercase mb-2"
+            style={{ color: accent }}
+          >
+            {navItem.label.toUpperCase()}
+          </div>
+          <h1 className="font-serif text-3xl lg:text-4xl">{preset.title}</h1>
+          {preset.subtitle && (
+            <p className={`text-sm mt-2 max-w-2xl ${isDark ? 'text-white/50' : 'text-ink-500'}`}>
+              {preset.subtitle}
+            </p>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm border ${
+              isDark ? 'border-white/10 hover:bg-white/5' : 'border-line hover:bg-paper-2'
+            }`}
+          >
+            <Filter size={14} /> Filtri
+          </button>
+          <button
+            type="button"
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm border ${
+              isDark ? 'border-white/10 hover:bg-white/5' : 'border-line hover:bg-paper-2'
+            }`}
+          >
+            <Download size={14} /> Esporta
+          </button>
+          <button
+            type="button"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-white font-medium"
+            style={{ background: accent }}
+          >
+            <Plus size={14} /> {preset.primaryAction ?? 'Nuovo'}
+          </button>
+        </div>
+      </div>
+
+      {/* FILTERS */}
+      {preset.filters && preset.filters.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {preset.filters.map((f, i) => (
+            <button
+              type="button"
+              key={f}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                i === 0
+                  ? 'text-white'
+                  : isDark
+                    ? 'border-white/10 text-white/60 hover:bg-white/5'
+                    : 'border-line text-ink-500 hover:bg-paper-2'
+              }`}
+              style={i === 0 ? { background: accent, borderColor: accent } : undefined}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* STATS */}
+      {preset.stats && (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+          {preset.stats.map((s, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className={`p-4 rounded-xl border ${
+                isDark ? 'border-white/5 bg-white/[0.02]' : 'border-line bg-paper'
+              }`}
+            >
+              <div
+                className={`font-mono text-[9px] tracking-[0.16em] uppercase mb-2 ${
+                  isDark ? 'text-white/40' : 'text-ink-400'
+                }`}
+              >
+                {s.label}
+              </div>
+              <div className="font-serif text-2xl" style={{ color: accent }}>
+                {s.value}
+              </div>
+              {s.trend && (
+                <div
+                  className={`text-[10px] font-mono mt-1 ${
+                    s.trend === 'up'
+                      ? 'text-success'
+                      : s.trend === 'down'
+                        ? 'text-danger'
+                        : isDark
+                          ? 'text-white/50'
+                          : 'text-ink-500'
+                  }`}
+                >
+                  {s.trend === 'up' ? '▲' : s.trend === 'down' ? '▼' : '▬'} trend
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {/* CORE MIND HINT */}
+      {preset.coreMindHint && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+          className="mb-6 p-4 rounded-xl border border-brand-violet/30 bg-gradient-to-r from-brand-violet/10 to-brand-violet-deep/5 flex items-start gap-3"
+        >
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-violet to-brand-violet-deep flex items-center justify-center shrink-0">
+            <Sparkles size={16} className="text-white" />
+          </div>
+          <div className="flex-1">
+            <div className="font-mono text-[10px] tracking-[0.18em] uppercase text-brand-violet mb-1">
+              CoreMind suggerisce
+            </div>
+            <p className={`text-sm ${isDark ? 'text-white/85' : 'text-ink-800'}`}>
+              {preset.coreMindHint}
+            </p>
+          </div>
+          <button
+            type="button"
+            className="text-xs font-medium px-3 py-1.5 rounded-lg bg-brand-violet text-white hover:bg-brand-violet-deep transition-colors shrink-0"
+          >
+            Procedi
+          </button>
+        </motion.div>
+      )}
+
+      {/* TABLE */}
+      <DataTableCard
+        title={preset.tableTitle}
+        columns={preset.columns}
+        rows={preset.rows}
+        isDark={isDark}
+      />
+    </>
+  )
+}
+
+// ═════════════════════════ DATA TABLE CARD ═════════════════════════
+function DataTableCard({
+  title,
+  columns,
+  rows,
+  isDark,
+}: {
+  title: string
+  columns: string[]
+  rows: (string | number)[][]
+  isDark: boolean
+}) {
+  return (
+    <div
+      className={`rounded-xl border overflow-hidden mb-6 ${
+        isDark ? 'border-white/5 bg-white/[0.02]' : 'border-line bg-paper'
+      }`}
+    >
+      <div
+        className={`p-4 border-b flex items-center justify-between ${
+          isDark ? 'border-white/5' : 'border-line'
+        }`}
+      >
+        <h3 className="font-serif text-lg">{title}</h3>
+        <button
+          type="button"
+          className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+            isDark ? 'hover:bg-white/5' : 'hover:bg-paper-2'
+          }`}
+          aria-label="Altre azioni"
+        >
+          <MoreHorizontal size={16} />
+        </button>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className={isDark ? 'border-b border-white/5' : 'border-b border-line'}>
+              {columns.map((col, i) => (
+                <th
+                  key={i}
+                  className={`text-left px-4 py-2.5 font-mono text-[10px] tracking-[0.16em] uppercase font-medium ${
+                    isDark ? 'text-white/40' : 'text-ink-400'
+                  }`}
+                >
+                  {col}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <motion.tr
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: i * 0.05 }}
+                className={`${
+                  isDark
+                    ? 'border-b border-white/5 hover:bg-white/[0.02]'
+                    : 'border-b border-line hover:bg-paper-2'
+                } transition-colors`}
+              >
+                {row.map((cell, j) => (
+                  <td key={j} className="px-4 py-3 whitespace-nowrap">
+                    {cell}
+                  </td>
+                ))}
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )
