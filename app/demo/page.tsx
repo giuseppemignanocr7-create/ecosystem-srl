@@ -51,7 +51,7 @@ export default function DemoPage() {
           </h1>
           <p className="text-lg text-ink-700 max-w-2xl mx-auto">
             Non è un video. Non è uno screenshot. È il prodotto vero, in modalità demo, con dati di
-            esempio. Apri quello del tuo settore e provalo. Cinque minuti e capisci esattamente cosa
+            esempio. Apri quello del tuo settore e provalo. Cinque minuti per capire esattamente cosa
             fa Ecosystem.
           </p>
         </div>

@@ -20,31 +20,31 @@ export const BRAND = {
 export const TEAM = [
   {
     name: 'Giuseppe Mignano',
-    role: 'Amministratore & Founder',
+    role: 'Fondatore — Founder',
     bio: 'Fondatore di Ecosystem. 7+ anni di consulenza aziendale, 37 progetti gestiti per oltre €50M di valore. Visione: portare l’intelligenza artificiale in ogni PMI italiana.',
     initials: 'GM',
-    accent: '#7C3AED',
+    accent: '#3B5FE8',
   },
   {
     name: 'Salvatore Brancaccio',
-    role: 'Co-founder',
+    role: 'Co-founder · CFO · Direttore Amministrativo',
     bio: 'Co-founder e partner strategico. Definisce l’architettura di prodotto e le verticalizzazioni di settore.',
     initials: 'SB',
     accent: '#3B5FE8',
   },
   {
     name: 'Claudia Del Giudice',
-    role: 'Responsabile Marketing',
+    role: 'Co-founder · CCO · Direttore Marketing',
     bio: 'Strategia di posizionamento, comunicazione e brand. Coordina le campagne di acquisizione e la voce di Ecosystem sul mercato.',
     initials: 'CD',
-    accent: '#EC4899',
+    accent: '#3B5FE8',
   },
   {
     name: 'Danilo Mastrocola',
-    role: 'Supporto allo Sviluppo',
+    role: 'DevOps Engineer · Sviluppatore',
     bio: 'Sviluppo e mantenimento dei moduli verticali. Supporta tecnicamente i team di onboarding e l’evoluzione di CoreMind.',
     initials: 'DM',
-    accent: '#06B6D4',
+    accent: '#3B5FE8',
   },
 ] as const
 

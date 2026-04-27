@@ -51,9 +51,9 @@ export default function PricingPage() {
 
         <Reveal delay={100}>
           <p className="text-lg text-ink-700 mb-12 max-w-2xl">
-            Niente fee nascoste, niente «contattaci per il prezzo». Investimento iniziale per
-            configurare la piattaforma sui tuoi processi, canone mensile per usarla, ore di
-            assistenza incluse. Tutto qui.
+            Nessuna fee nascosta, un piano di costi definito per una libertà decisionale assoluta.
+            Valorizziamo il vostro tempo con un modello chiaro: setup su misura, canone ricorrente
+            e assistenza inclusa. La trasparenza è il nostro standard di fiducia.
           </p>
         </Reveal>
 

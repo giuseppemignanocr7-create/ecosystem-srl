@@ -7,6 +7,7 @@ import { Integrations } from '@/components/sections/Integrations'
 import { ManifestoQuote } from '@/components/sections/ManifestoQuote'
 import { PricingTeaser } from '@/components/sections/PricingTeaser'
 import { FAQ } from '@/components/sections/FAQ'
+import { Support } from '@/components/sections/Support'
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <ManifestoQuote />
       <PricingTeaser />
       <FAQ />
+      <Support />
     </>
   )
 }

@@ -15,10 +15,10 @@ export function PricingTeaser() {
         <SectionNumber number="05 —" label="Investimento" />
         
         <Reveal>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.05] mb-12">
-            Prezzi trasparenti.
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-12 max-w-5xl text-pearl-shine-dark">
+            Prezzi trasparenti
             <br />
-            <em className="text-accent-tech not-italic">Calcolati sull&apos;uso reale.</em>
+            calcolati sull&apos;uso reale
           </h2>
         </Reveal>
         

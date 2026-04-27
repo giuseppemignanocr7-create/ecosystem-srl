@@ -16,7 +16,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     category: 'Supporto',
   },
   {
-    question: 'I miei dati dove stanno e di chi sono?',
+    question: 'Dove vanno a finire i miei dati, chi ne detiene il dominio?',
     answer: 'I tuoi dati sono tuoi, sempre. Hosting su cluster PostgreSQL dedicati in data center italiani (certificazione ISO 27001, ISO 22301, Tier IV). Export completo in formato standard (CSV, JSON, SQL) disponibile in qualsiasi momento, nessun lock-in.',
     category: 'Sicurezza',
   },

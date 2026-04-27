@@ -16,7 +16,7 @@ export function Integrations() {
         
         <Reveal delay={100}>
           <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-12 max-w-5xl text-pearl-shine-dark">
-            Si integra con oltre 200 sistemi esterni attraverso API native, connettori certificati e middleware personalizzabili.
+            Ecosystem si integra con oltre 200 sistemi esterni attraverso API native, connettori certificati e middleware personalizzabili.
           </h2>
         </Reveal>
         

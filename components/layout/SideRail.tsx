@@ -14,8 +14,7 @@ import {
   Search,
   ChevronRight,
   ChevronDown,
-  ChevronsRight,
-  ChevronsLeft,
+  Menu,
   Cpu,
   type LucideIcon,
 } from 'lucide-react'
@@ -85,7 +84,7 @@ export function SideRail() {
   useEffect(() => {
     function applyVar() {
       if (window.matchMedia('(min-width: 1024px)').matches) {
-        document.documentElement.style.setProperty('--rail-w', collapsed ? '64px' : '288px')
+        document.documentElement.style.setProperty('--rail-w', collapsed ? '76px' : '288px')
       } else {
         document.documentElement.style.setProperty('--rail-w', '0px')
       }
@@ -124,20 +123,33 @@ export function SideRail() {
     <>
       {/* DESKTOP RAIL — ESPANSO */}
       <motion.aside
-        animate={{ width: collapsed ? 64 : 288 }}
+        animate={{ width: collapsed ? 76 : 288 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="hidden lg:flex fixed top-0 right-0 bottom-0 z-40 flex-col bg-paper/90 backdrop-blur-xl border-l border-line overflow-hidden"
         aria-label="Navigazione principale"
       >
-        {/* Collapse toggle */}
-        <button
+        {/* Collapse toggle - big blue pulsing hamburger */}
+        <motion.button
           type="button"
           onClick={() => setCollapsed((c) => !c)}
-          className="absolute top-4 left-2 w-8 h-8 rounded-lg bg-paper border border-line hover:border-brand-violet/40 hover:bg-paper-2 flex items-center justify-center text-ink-500 hover:text-brand-violet transition-colors z-10"
+          className="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-12 rounded-xl flex items-center justify-center z-10 shadow-lg shadow-brand-violet/30"
+          style={{
+            background: 'linear-gradient(135deg, #3B5FE8 0%, #1A2750 100%)',
+          }}
           aria-label={collapsed ? 'Espandi menu' : 'Riduci menu'}
+          animate={{
+            boxShadow: [
+              '0 4px 14px 0 rgba(59,95,232,0.35)',
+              '0 4px 24px 4px rgba(59,95,232,0.55)',
+              '0 4px 14px 0 rgba(59,95,232,0.35)',
+            ],
+          }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          {collapsed ? <ChevronsLeft size={14} /> : <ChevronsRight size={14} />}
-        </button>
+          <Menu size={22} style={{ color: '#E8EBF2', strokeWidth: 2.4 }} />
+        </motion.button>
 
         {!collapsed && (
           <>
@@ -162,19 +174,22 @@ export function SideRail() {
           <Link
             href="/"
             aria-label="Ecosystem — Home"
-            className="mt-16 mb-3 mx-auto hover:opacity-80 transition-opacity"
+            className="mt-20 mb-3 mx-auto hover:opacity-80 transition-opacity"
           >
             <Logo variant="mark" size={32} priority />
           </Link>
         )}
 
-        <nav className="flex-1 overflow-y-auto px-3">
-          {ITEMS.map((item) => {
+        <nav className={`flex-1 overflow-y-auto ${collapsed ? 'px-2' : 'px-3'}`}>
+          {ITEMS.map((item, idx) => {
             const Icon = item.icon
             const isActive =
               item.href === pathname ||
               (item.submenu?.some((s) => s.href === pathname) ?? false)
             const isExpanded = expandedId === item.id
+            // Alternating colors for collapsed state: blue / pearl
+            const isBlue = idx % 2 === 0
+            const collapsedIconColor = isBlue ? '#3B5FE8' : '#A8B0BD'
 
             if (item.href) {
               return (
@@ -190,7 +205,17 @@ export function SideRail() {
                   }`}
                   title={collapsed ? item.label : undefined}
                 >
-                  <Icon size={18} className="shrink-0" />
+                  {collapsed && !isActive ? (
+                    <motion.span
+                      className="shrink-0 inline-flex"
+                      animate={{ scale: [1, 1.12, 1] }}
+                      transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.18 }}
+                    >
+                      <Icon size={20} style={{ color: collapsedIconColor, strokeWidth: 2 }} />
+                    </motion.span>
+                  ) : (
+                    <Icon size={collapsed ? 20 : 18} className="shrink-0" />
+                  )}
                   {!collapsed && (
                     <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
                   )}
@@ -232,7 +257,17 @@ export function SideRail() {
                   aria-expanded={isExpanded}
                   title={collapsed ? item.label : undefined}
                 >
-                  <Icon size={18} className="shrink-0" />
+                  {collapsed && !(isActive || isExpanded) ? (
+                    <motion.span
+                      className="shrink-0 inline-flex"
+                      animate={{ scale: [1, 1.12, 1] }}
+                      transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.18 }}
+                    >
+                      <Icon size={20} style={{ color: collapsedIconColor, strokeWidth: 2 }} />
+                    </motion.span>
+                  ) : (
+                    <Icon size={collapsed ? 20 : 18} className="shrink-0" />
+                  )}
                   {!collapsed && (
                     <>
                       <span className="text-sm font-medium flex-1 text-left whitespace-nowrap">{item.label}</span>

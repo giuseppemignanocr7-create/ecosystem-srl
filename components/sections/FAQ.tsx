@@ -27,7 +27,7 @@ export function FAQ() {
 
         <Reveal>
           <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-12 max-w-3xl text-pearl-shine">
-            Hai dubbi? Risposte chiare.
+            FAQ
           </h2>
         </Reveal>
 
