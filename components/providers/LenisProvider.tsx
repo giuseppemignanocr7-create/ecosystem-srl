@@ -7,6 +7,9 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    // Skip on mobile/touch devices: native momentum scrolling is better
+    if (window.matchMedia('(pointer: coarse)').matches) return
+    if (window.innerWidth < 1024) return
 
     const lenis = new Lenis({
       duration: 1.2,

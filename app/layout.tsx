@@ -1,14 +1,23 @@
 import type { Metadata } from 'next'
 import { Instrument_Serif, Inter_Tight, JetBrains_Mono } from 'next/font/google'
+import dynamic from 'next/dynamic'
 import './globals.css'
 import { SideRail } from '@/components/layout/SideRail'
 import { TopBrand } from '@/components/layout/TopBrand'
 import { Footer } from '@/components/layout/Footer'
-import { CookieBanner } from '@/components/layout/CookieBanner'
-import { CoreMindFloating } from '@/components/coremind/CoreMindFloating'
 import { MobileNav } from '@/components/layout/MobileNav'
 import { LenisProvider } from '@/components/providers/LenisProvider'
 import { ScrollProgress } from '@/components/motion/ScrollProgress'
+
+// Defer non-critical client widgets (no SSR + lazy-loaded chunk)
+const CoreMindFloating = dynamic(
+  () => import('@/components/coremind/CoreMindFloating').then(m => m.CoreMindFloating),
+  { ssr: false }
+)
+const CookieBanner = dynamic(
+  () => import('@/components/layout/CookieBanner').then(m => m.CookieBanner),
+  { ssr: false }
+)
 
 const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
