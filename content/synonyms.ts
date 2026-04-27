@@ -58,9 +58,12 @@ export const SYNONYMS: string[][] = [
   ['appuntamento', 'meeting', 'riunione', 'call', 'videocall', 'videochiamata'],
   ['indirizzo', 'sede', 'ufficio', 'azienda', 'dove siete'],
 
-  // Company
-  ['ecosystem', 'eco', 'azienda', 'società', 'srl', 's.r.l', 'team', 'fondatore', 'founder', 'staff'],
-  ['storia', 'mission', 'visione', 'chi siete', 'about'],
+  // Company — KEEP these clusters DISJOINT to avoid cross-contamination.
+  // "ecosystem" is the brand name and must NOT be a synonym of anything.
+  ['azienda', 'società', 'srl', 's.r.l', 'company'],
+  ['fondatore', 'founder', 'ceo', 'creatore', 'amministratore delegato'],
+  ['team', 'staff', 'collaboratori', 'dipendenti', 'persone'],
+  ['storia', 'mission', 'visione', 'about', 'chi siete'],
 
   // Technical
   ['installazione', 'installare', 'installare il software', 'download', 'scaricare'],

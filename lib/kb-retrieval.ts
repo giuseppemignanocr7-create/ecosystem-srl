@@ -15,9 +15,46 @@
  */
 
 import { KNOWLEDGE_BASE, KBEntry } from '@/content/knowledge-base'
-import { buildSynonymIndex, expandQuery, normalize } from '@/content/synonyms'
+import { SYNONYMS, buildSynonymIndex, normalize } from '@/content/synonyms'
 
 const SYN_INDEX = buildSynonymIndex()
+
+// Italian stop-words: ignored for matching but kept in display
+const STOPWORDS = new Set([
+  'il', 'la', 'lo', 'le', 'gli', 'un', 'una', 'uno', 'di', 'da', 'del', 'della',
+  'dei', 'delle', 'degli', 'in', 'su', 'per', 'con', 'che', 'chi', 'cui',
+  'è', 'e', 'ed', 'o', 'ma', 'se', 'al', 'ai', 'agli', 'alle', 'allo', 'alla',
+  'mi', 'ti', 'si', 'ci', 'vi', 'ne',
+  'cosa', 'come', 'dove', 'quando', 'quanto', 'quale', 'quali', 'perche', 'perché',
+  'mio', 'mia', 'tuo', 'tua', 'suo', 'sua',
+  'ho', 'ha', 'hai', 'fa', 'fare', 'fate', 'fanno',
+  'spiegami', 'spiega', 'dimmi', 'dimi', 'puoi', 'puo', 'voglio', 'vorrei',
+  'punti', 'punto', 'breve', 'sintesi',
+])
+
+/**
+ * Returns the synonym cluster ids a token belongs to (or null).
+ */
+function clustersFor(token: string): number[] | null {
+  return SYN_INDEX.get(token) ?? null
+}
+
+/**
+ * Tells if a query token (or any of its synonym siblings) is present in entry tokens.
+ */
+function tokenMatchesEntry(qToken: string, eTokens: Set<string>): { matched: boolean; viaSynonym: boolean } {
+  if (eTokens.has(qToken)) return { matched: true, viaSynonym: false }
+  const clusters = clustersFor(qToken)
+  if (!clusters) return { matched: false, viaSynonym: false }
+  for (const c of clusters) {
+    for (const sib of SYNONYMS[c]) {
+      const norm = normalize(sib)
+      if (norm === qToken) continue
+      if (eTokens.has(norm)) return { matched: true, viaSynonym: true }
+    }
+  }
+  return { matched: false, viaSynonym: false }
+}
 
 export interface RetrievalHit {
   entry: KBEntry
@@ -67,75 +104,88 @@ function entryTokens(entry: KBEntry): Set<string> {
 }
 
 /**
- * Score an entry against expanded query terms.
+ * Score an entry against the query.
+ *
+ * Key design choices to avoid past pathologies:
+ *  - Each query token can contribute AT MOST ONCE to the match score
+ *    (no per-synonym-sibling double counting).
+ *  - Direct token match is worth more than synonym-mediated match.
+ *  - Bigram and full-phrase question-text matches dominate the score:
+ *    if the user's phrase appears verbatim in entry.question, that's
+ *    overwhelming evidence regardless of single-token noise.
+ *  - Coverage ratio (matchedContent / contentTokens) shapes the result,
+ *    NOT raw token count, so adding extra aliases does not silently boost
+ *    or penalize entries.
  */
-function scoreEntry(entry: KBEntry, expanded: Set<string>, queryTokens: string[]): {
+function scoreEntry(entry: KBEntry, contentTokens: string[]): {
   score: number
   matched: string[]
 } {
   const eTokens = entryTokens(entry)
+  const entryQ = normalize(entry.question)
+  const entryAliases = (entry.aliases ?? []).map(normalize)
+  const matched = new Set<string>()
   let score = 0
-  const matched: string[] = []
 
-  // Direct token overlap (synonym-expanded)
-  for (const term of Array.from(expanded)) {
-    if (eTokens.has(term)) {
-      score += 1
-      matched.push(term)
+  // 1) Direct or synonym-mediated token overlap (counted once per query token).
+  for (const qt of contentTokens) {
+    const r = tokenMatchesEntry(qt, eTokens)
+    if (r.matched) {
+      score += r.viaSynonym ? 0.6 : 1.0
+      matched.add(qt)
     }
   }
 
-  // Bigram bonus: if any consecutive pair from query appears in entry's question (normalized)
-  const qNorm = queryTokens.join(' ')
-  const entryQNorm = normalize(entry.question)
-  for (let i = 0; i < queryTokens.length - 1; i++) {
-    const bigram = `${queryTokens[i]} ${queryTokens[i + 1]}`
-    if (entryQNorm.includes(bigram)) {
-      score += 1.5
-    }
+  // 2) Bigram bonus on question + aliases (stronger signal than single tokens).
+  for (let i = 0; i < contentTokens.length - 1; i++) {
+    const bigram = `${contentTokens[i]} ${contentTokens[i + 1]}`
+    if (entryQ.includes(bigram)) score += 1.4
+    else if (entryAliases.some((a) => a.includes(bigram))) score += 0.9
   }
 
-  // Question prefix match (strong signal)
-  for (const term of queryTokens) {
-    if (entryQNorm.startsWith(term + ' ') || entryQNorm.startsWith(term)) {
-      score += 0.5
-      break
-    }
+  // 3) Trigram / phrase super-bonus when 3+ consecutive query tokens hit the question.
+  for (let i = 0; i < contentTokens.length - 2; i++) {
+    const trig = `${contentTokens[i]} ${contentTokens[i + 1]} ${contentTokens[i + 2]}`
+    if (entryQ.includes(trig)) score += 2.5
   }
 
-  // Fuzzy fallback for typos (only for unmatched tokens)
-  if (matched.length < queryTokens.length) {
-    for (const qt of queryTokens) {
-      if (matched.includes(qt)) continue
-      if (qt.length < 4) continue // skip short tokens
-      for (const et of Array.from(eTokens)) {
-        if (et.length < 4) continue
-        const dist = levenshtein(qt, et, 2)
-        if (dist <= 2 && dist > 0) {
-          score += 0.4
-          matched.push(et)
-          break
-        }
+  // 4) Fuzzy fallback only for query tokens not yet matched (typos).
+  for (const qt of contentTokens) {
+    if (matched.has(qt) || qt.length < 5) continue
+    for (const et of Array.from(eTokens)) {
+      if (et.length < 5) continue
+      const d = levenshtein(qt, et, 2)
+      if (d > 0 && d <= 2) {
+        score += 0.35
+        matched.add(qt)
+        break
       }
     }
   }
 
-  // Length normalization: avoid super-broad entries dominating
-  const denom = Math.max(1, Math.sqrt(eTokens.size))
-  return { score: score / denom, matched }
+  // 5) Coverage ratio: how much of the meaningful query did we cover?
+  //    This is the dominant multiplier, so a 1-token incidental match cannot
+  //    out-rank an entry that covers most of the query.
+  const coverage = contentTokens.length > 0 ? matched.size / contentTokens.length : 0
+  score *= 0.5 + coverage // [0.5x .. 1.5x]
+
+  return { score, matched: Array.from(matched) }
 }
 
 /**
  * Retrieve top-K KB entries for a user query.
  * Returns sorted hits above min score threshold.
  */
-export function retrieve(query: string, topK = 4, minScore = 0.25): RetrievalHit[] {
-  const expanded = expandQuery(query, SYN_INDEX)
-  const queryTokens = normalize(query).split(' ').filter((t) => t.length >= 2)
+export function retrieve(query: string, topK = 4, minScore = 0.6): RetrievalHit[] {
+  const allTokens = normalize(query).split(' ').filter((t) => t.length >= 2)
+  // Drop stop-words: they are noise that previously boosted bad entries.
+  const contentTokens = allTokens.filter((t) => !STOPWORDS.has(t))
+  // Fall back to all tokens if the query is entirely stop-words.
+  const tokens = contentTokens.length > 0 ? contentTokens : allTokens
 
   const hits: RetrievalHit[] = []
   for (const entry of KNOWLEDGE_BASE) {
-    const { score, matched } = scoreEntry(entry, expanded, queryTokens)
+    const { score, matched } = scoreEntry(entry, tokens)
     if (score >= minScore) {
       hits.push({ entry, score, matchedTokens: matched })
     }
@@ -166,8 +216,12 @@ export function maybeDirectAnswer(hits: RetrievalHit[]): string | null {
   if (hits.length === 0) return null
   const top = hits[0]
   const second = hits[1]
-  // Direct answer if top score is high and clearly dominant
-  if (top.score >= 1.2 && (!second || top.score > second.score * 1.6)) {
+  // Direct answer ONLY when:
+  //  - score is very high (phrase-level match likely),
+  //  - AND clearly dominant over the runner-up (>= 2x).
+  // Otherwise we always go through the LLM so it can synthesise from
+  // multiple hits and answer the actual user intent (e.g. "in 3 punti").
+  if (top.score >= 2.5 && (!second || top.score > second.score * 2.0)) {
     return top.entry.answer
   }
   return null
