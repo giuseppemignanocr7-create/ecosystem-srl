@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { retrieve, buildContextBlock, maybeDirectAnswer } from '@/lib/kb-retrieval'
+import { SITE_KNOWLEDGE } from '@/lib/site-knowledge'
 
 export const runtime = 'edge'
+
+// ============ RATE LIMITING ============
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
+const RATE_LIMIT = 15
+const RATE_WINDOW = 60 * 60 * 1000
 
 async function sha256Short(input: string): Promise<string> {
   const data = new TextEncoder().encode(input)
@@ -12,102 +18,182 @@ async function sha256Short(input: string): Promise<string> {
     .slice(0, 16)
 }
 
-// Rate limiting in-memory (per Run 1 - in Run 2 si sposta su Redis/Supabase)
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
+// ============ SYSTEM PROMPT ============
+function buildSystemPrompt(kbContext: string): string {
+  return `Sei **CoreMind**, l'assistente AI ufficiale di Ecosystem (la piattaforma gestionale multi-verticale di Ecosystem S.R.L.).
 
-const RATE_LIMIT = 10 // messaggi per ora
-const RATE_WINDOW = 60 * 60 * 1000 // 1 ora in ms
+Stai parlando con un visitatore del sito ecosystem-srl.vercel.app che vuole capire cosa fa Ecosystem. Sei in modalità playground pubblico.
 
-const SYSTEM_PROMPT = `Sei CoreMind, l'assistente AI di Ecosystem, la piattaforma gestionale multi-verticale di Ecosystem S.R.L.
+## REGOLE FONDAMENTALI
+1. Rispondi SEMPRE in italiano professionale ma diretto.
+2. Sii concreto, denso di fatti. 100–250 parole tipiche.
+3. Usa le informazioni nel blocco "CONOSCENZA RILEVANTE DAL SITO" come fonte primaria — è il contenuto autorevole del sito.
+4. Se la domanda riguarda funzioni operative ("crea un cantiere", "fattura cliente"), simula l'azione con dati realistici di esempio.
+5. NON inventare prezzi, funzioni o numeri non presenti nel knowledge map. Se non sai, dillo e suggerisci di contattare info@ecosystem.org o /contatti.
+6. Quando opportuno usa **liste**, **tabelle markdown** o **link** alle pagine del sito (/demo, /pricing, /suite, /contatti).
+7. Chiudi con un CTA naturale: "Vuoi provare la demo gratuita su /demo?" oppure "Prenota una call su /contatti".
 
-Stai parlando con un visitatore del sito web che vuole capire cosa puoi fare. Sei in modalità playground pubblico: non hai accesso a dati reali, ma devi SIMULARE risposte realistiche su dati aziendali di esempio.
+## SITE KNOWLEDGE MAP
+${SITE_KNOWLEDGE}
 
-Regole:
-1. Rispondi SEMPRE in italiano professionale.
-2. Sii concreto, tecnico, denso di contenuto reale.
-3. Quando l'utente chiede qualcosa di operativo ("crea un cantiere", "genera un contratto"), simula l'azione con dati realistici e mostra il risultato come se fosse stata eseguita davvero.
-4. Usa terminologia italiana dei settori (SAL, POS, HACCP, ISEE, PCT, ecc.).
-5. Se chiedono cose fuori scope (non business/gestionale), riportali gentilmente al prodotto.
-6. Risposte medie 150-300 parole. Sii denso, non prolisso.
-7. Quando ha senso, usa tabelle markdown o liste numerate.
-8. Non inventare funzioni che non esistono nel sistema.
-9. Chiudi spesso con un invito naturale a provare la demo o richiedere un appuntamento.
+${kbContext ? `\n${kbContext}\n` : ''}`.trim()
+}
 
-Esempi di comportamento:
-- Utente: "Crea un ordine fornitore"
-  Tu: Simula l'ordine con dati realistici (fornitore, prodotti, quantità, prezzi, totale)
-- Utente: "Fatturato Q3"
-  Tu: Simula un report con numeri realistici, trend, confronto QoQ`;
+// ============ LLM PROVIDERS ============
+
+interface LLMMessage {
+  role: 'user' | 'assistant'
+  content: string
+}
+
+async function callGroq(systemPrompt: string, history: LLMMessage[], message: string): Promise<string | null> {
+  const apiKey = process.env.GROQ_API_KEY
+  if (!apiKey) return null
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      max_tokens: 700,
+      temperature: 0.4,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...history.slice(-4),
+        { role: 'user', content: message },
+      ],
+    }),
+  })
+
+  if (!res.ok) {
+    console.error('[groq]', res.status, await res.text())
+    return null
+  }
+
+  const data = await res.json()
+  return data?.choices?.[0]?.message?.content ?? null
+}
+
+async function callAnthropic(systemPrompt: string, history: LLMMessage[], message: string): Promise<string | null> {
+  const apiKey = process.env.ANTHROPIC_API_KEY
+  if (!apiKey) return null
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'claude-3-5-sonnet-20241022',
+      max_tokens: 700,
+      system: systemPrompt,
+      messages: [
+        ...history.slice(-4),
+        { role: 'user', content: message },
+      ],
+    }),
+  })
+
+  if (!res.ok) {
+    console.error('[anthropic]', res.status, await res.text())
+    return null
+  }
+
+  const data = await res.json()
+  const block = data?.content?.find((b: { type: string }) => b.type === 'text')
+  return block?.text ?? null
+}
+
+// ============ HANDLER ============
 
 export async function POST(req: NextRequest) {
   try {
-    const apiKey = process.env.ANTHROPIC_API_KEY
-    
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: 'Servizio temporaneamente non disponibile. Riprova più tardi.' },
-        { status: 503 }
-      )
+    const { message, history } = await req.json() as {
+      message: string
+      sessionId?: string
+      history?: LLMMessage[]
     }
 
-    const anthropic = new Anthropic({ apiKey })
-    const { message, sessionId, history } = await req.json()
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      return NextResponse.json({ error: 'Messaggio vuoto.' }, { status: 400 })
+    }
 
-    // Rate limiting
+    // Rate limit
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown'
     const ipHash = await sha256Short(ip)
-    
     const now = Date.now()
     const record = rateLimitMap.get(ipHash)
-    
-    if (record && now > record.resetTime) {
-      rateLimitMap.delete(ipHash)
-    }
-    
-    const currentRecord = rateLimitMap.get(ipHash)
-    const count = currentRecord ? currentRecord.count : 0
-    
+    if (record && now > record.resetTime) rateLimitMap.delete(ipHash)
+    const current = rateLimitMap.get(ipHash)
+    const count = current?.count ?? 0
     if (count >= RATE_LIMIT) {
       return NextResponse.json(
-        { 
-          error: 'Hai raggiunto il limite di 10 messaggi all\'ora. Prenota una demo per continuare.',
-          limitReached: true 
+        {
+          error: `Hai raggiunto il limite di ${RATE_LIMIT} messaggi all'ora. Prenota una demo per continuare su /contatti.`,
+          limitReached: true,
         },
         { status: 429 }
       )
     }
 
-    // Chiamata Claude
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 800,
-      system: SYSTEM_PROMPT,
-      messages: [
-        ...(history || []).slice(-6).map((h: { role: string; content: string }) => ({
-          role: h.role === 'user' ? 'user' : 'assistant',
-          content: h.content,
-        })),
-        { role: 'user', content: message }
-      ],
-    })
+    // ============ STEP 1: KB RETRIEVAL ============
+    const hits = retrieve(message, 4, 0.25)
 
-    // Aggiorna rate limit
+    // STEP 2: high-confidence direct answer
+    const direct = maybeDirectAnswer(hits)
+    if (direct) {
+      rateLimitMap.set(ipHash, {
+        count: count + 1,
+        resetTime: current?.resetTime ?? now + RATE_WINDOW,
+      })
+      return NextResponse.json({
+        reply: direct,
+        source: 'kb',
+        matches: hits.slice(0, 2).map((h) => h.entry.id),
+        remaining: RATE_LIMIT - count - 1,
+      })
+    }
+
+    // STEP 3: LLM with retrieved context
+    const kbContext = buildContextBlock(hits)
+    const systemPrompt = buildSystemPrompt(kbContext)
+    const safeHistory = (history ?? []).slice(-4)
+
+    let reply = await callGroq(systemPrompt, safeHistory, message)
+    let provider = 'groq'
+
+    if (!reply) {
+      reply = await callAnthropic(systemPrompt, safeHistory, message)
+      provider = 'anthropic'
+    }
+
+    // STEP 4: ultimate fallback — top KB hit if LLMs unavailable
+    if (!reply) {
+      if (hits.length > 0) {
+        reply = `${hits[0].entry.answer}\n\n_(Servizio AI temporaneamente non disponibile, ho risposto con il match più vicino dalla nostra knowledge base.)_`
+        provider = 'kb-fallback'
+      } else {
+        reply = "Non sono riuscito a trovare una risposta. Puoi contattarci direttamente:\n- Email: info@ecosystem.org\n- Telefono: +39 327 160 4592\n- Form: /contatti\n\nOppure esplora la demo gratuita su /demo."
+        provider = 'no-match'
+      }
+    }
+
     rateLimitMap.set(ipHash, {
       count: count + 1,
-      resetTime: currentRecord ? currentRecord.resetTime : now + RATE_WINDOW,
+      resetTime: current?.resetTime ?? now + RATE_WINDOW,
     })
 
-    const reply = response.content
-      .filter((b): b is { type: 'text'; text: string } => b.type === 'text')
-      .map(b => b.text)
-      .join('\n')
-
-    return NextResponse.json({ 
+    return NextResponse.json({
       reply,
-      tokensUsed: response.usage,
+      source: provider,
+      matches: hits.slice(0, 3).map((h) => ({ id: h.entry.id, score: Number(h.score.toFixed(2)) })),
       remaining: RATE_LIMIT - count - 1,
     })
-    
   } catch (err) {
     console.error('[coremind-playground]', err)
     return NextResponse.json(
