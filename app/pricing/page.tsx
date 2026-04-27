@@ -173,7 +173,7 @@ export default function PricingPage() {
 
         {/* CALCOLATORE */}
         <Reveal delay={300}>
-          <div className="rounded-2xl border border-line-strong bg-gradient-to-br from-bg-ink to-[#1a1a24] text-white p-8 lg:p-10 mb-20 relative overflow-hidden">
+          <div className="rounded-2xl border border-brand-navy-3 bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white p-8 lg:p-10 mb-20 relative overflow-hidden">
             <div
               className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-30 pointer-events-none"
               style={{

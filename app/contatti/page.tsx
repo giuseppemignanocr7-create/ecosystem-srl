@@ -227,9 +227,9 @@ export default function ContattiPage() {
                 </div>
               </Card>
               
-              <Card className="bg-ink text-white border-ink">
-                <h3 className="font-serif text-xl mb-2">Preferisci una demo immediata?</h3>
-                <p className="text-ink-300 mb-4">
+              <Card className="bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white border-brand-navy-3">
+                <h3 className="font-serif text-xl mb-2 text-pearl-shine">Preferisci una demo immediata?</h3>
+                <p className="text-white/75 mb-4">
                   Prova la nostra sandbox interattiva con dati finti ma funzioni reali. 
                   Nessuna registrazione richiesta.
                 </p>

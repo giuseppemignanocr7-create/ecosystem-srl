@@ -163,12 +163,12 @@ export function SuitePageTemplate({ suite }: SuitePageTemplateProps) {
       </section>
 
       {/* CoreMind per questa suite */}
-      <section className="section-padding bg-ink text-white">
+      <section className="section-padding bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white">
         <div className="container-custom">
           <SectionNumber number="04 —" label="CoreMind" light />
           
           <Reveal>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.05] mb-12">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.05] mb-12 text-pearl-shine">
               CoreMind per <em className="text-accent-tech not-italic">{suite.name}</em>
             </h2>
           </Reveal>
@@ -176,7 +176,7 @@ export function SuitePageTemplate({ suite }: SuitePageTemplateProps) {
           <div className="grid md:grid-cols-2 gap-6">
             {suite.useCases.map((useCase, index) => (
               <Reveal key={index} delay={100 + index * 100}>
-                <div className="bg-ink-2 rounded-xl p-6 border border-ink">
+                <div className="bg-white/5 rounded-xl p-6 border border-white/10 backdrop-blur-sm">
                   <span className="font-mono text-xs text-accent-brass mb-2 block">
                     USE CASE {String(index + 1).padStart(2, '0')}
                   </span>
@@ -342,10 +342,10 @@ export function SuitePageTemplate({ suite }: SuitePageTemplateProps) {
       <EcoGenModule config={ecoConfig} />
 
       {/* CTA finale */}
-      <section className="section-padding bg-ink text-white">
+      <section className="section-padding bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white">
         <div className="container-custom text-center">
           <Reveal>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.05] mb-6">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.05] mb-6 text-pearl-shine">
               Pronto per provare <em className="text-accent-tech not-italic">{suite.name}</em>?
             </h2>
           </Reveal>

@@ -93,7 +93,7 @@ export default function CoreMindPage() {
   return (
     <div className="bg-paper">
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-ink text-white relative overflow-hidden">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-tech/20 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-brass/10 rounded-full blur-3xl" />
@@ -101,7 +101,7 @@ export default function CoreMindPage() {
         
         <div className="container-custom relative z-10">
           <Reveal>
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.05] mb-6 max-w-4xl">
+            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.05] mb-6 max-w-4xl text-pearl-shine">
               CoreMind.
               <br />
               <em className="text-accent-tech not-italic">L&apos;intelligenza che lavora per te.</em>
@@ -109,7 +109,7 @@ export default function CoreMindPage() {
           </Reveal>
           
           <Reveal delay={100}>
-            <p className="text-lg text-ink-300 mb-8 max-w-2xl">
+            <p className="text-lg text-white/75 mb-8 max-w-2xl">
               Non è un chatbot. È un agente AI nativo che comprende la tua azienda, 
               opera sui tuoi dati e coordina azioni complesse attraverso tutto l&apos;ecosistema.
             </p>
@@ -365,10 +365,10 @@ export default function CoreMindPage() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-ink text-white">
+      <section className="section-padding bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white">
         <div className="container-custom text-center">
           <Reveal>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.05] mb-6">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.05] mb-6 text-pearl-shine">
               Vuoi vedere CoreMind <em className="text-accent-tech not-italic">sui tuoi dati?</em>
             </h2>
           </Reveal>

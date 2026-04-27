@@ -27,7 +27,7 @@ export function CookieBanner() {
 
   return (
     <div 
-      className="fixed bottom-0 left-0 right-0 bg-ink text-white z-50"
+      className="fixed bottom-0 left-0 right-0 bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white z-50"
       role="dialog"
       aria-label="Informativa cookie"
     >
