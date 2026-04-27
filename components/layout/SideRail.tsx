@@ -84,7 +84,7 @@ export function SideRail() {
   useEffect(() => {
     function applyVar() {
       if (window.matchMedia('(min-width: 1024px)').matches) {
-        document.documentElement.style.setProperty('--rail-w', collapsed ? '76px' : '288px')
+        document.documentElement.style.setProperty('--rail-w', collapsed ? '72px' : '288px')
       } else {
         document.documentElement.style.setProperty('--rail-w', '0px')
       }
@@ -123,7 +123,7 @@ export function SideRail() {
     <>
       {/* DESKTOP RAIL — ESPANSO */}
       <motion.aside
-        animate={{ width: collapsed ? 76 : 288 }}
+        animate={{ width: collapsed ? 72 : 288 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="hidden lg:flex fixed top-0 right-0 bottom-0 z-40 flex-col bg-paper/90 backdrop-blur-xl border-l border-line overflow-hidden"
         aria-label="Navigazione principale"
@@ -157,15 +157,7 @@ export function SideRail() {
           <div className="mt-20" aria-hidden />
         )}
 
-        {collapsed && (
-          <Link
-            href="/"
-            aria-label="Ecosystem — Home"
-            className="mt-20 mb-3 mx-auto hover:opacity-80 transition-opacity"
-          >
-            <Logo variant="mark" size={32} priority />
-          </Link>
-        )}
+        {collapsed && <div className="mt-20" aria-hidden />}
 
         <nav className={`flex-1 overflow-y-auto ${collapsed ? 'px-2' : 'px-3'}`}>
           {ITEMS.map((item, idx) => {
