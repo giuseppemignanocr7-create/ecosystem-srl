@@ -2,7 +2,15 @@
  * CoreMind Knowledge Base.
  * Each entry has: id, category, question (canonical), aliases (alt phrasings), answer, tags.
  * Retrieval engine matches against question + aliases + tags using fuzzy + synonym expansion.
+ *
+ * Total corpus: 60 base + 460 extended = 520+ Q&A
  */
+
+import { KB_SUITES } from './kb/kb-suites'
+import { KB_COMPLIANCE } from './kb/kb-compliance'
+import { KB_OPERATIONS } from './kb/kb-operations'
+import { KB_PRICING_ONBOARDING } from './kb/kb-pricing-onboarding'
+import { KB_TECH_COREMIND } from './kb/kb-tech-coremind'
 
 export interface KBEntry {
   id: string
@@ -608,6 +616,17 @@ export const KNOWLEDGE_BASE: KBEntry[] = [
     tags: ['integrazione', 'coesistenza'],
   },
 ]
+
+/**
+ * Merge extended KB (460+ entries) into the main corpus.
+ */
+KNOWLEDGE_BASE.push(
+  ...KB_SUITES,
+  ...KB_COMPLIANCE,
+  ...KB_OPERATIONS,
+  ...KB_PRICING_ONBOARDING,
+  ...KB_TECH_COREMIND,
+)
 
 /**
  * Convenience: lookup table by id
