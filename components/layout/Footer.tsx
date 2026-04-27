@@ -5,7 +5,7 @@ import { Logo } from '@/components/ui/Logo'
 
 export function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-pearl-shine relative overflow-hidden" role="contentinfo">
+    <footer className="bg-gradient-to-br from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white relative overflow-hidden" role="contentinfo">
       <div
         className="absolute -top-32 -left-20 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
         style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.4) 0%, transparent 70%)' }}
