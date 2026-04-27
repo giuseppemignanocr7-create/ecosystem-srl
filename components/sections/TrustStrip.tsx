@@ -12,13 +12,13 @@ export function TrustStrip() {
   ]
 
   return (
-    <section className="py-12 border-y border-line bg-paper-2">
+    <section className="py-8 md:py-12 border-y border-line bg-paper-2">
       <div className="container-custom">
         <Reveal>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center lg:text-left">
-                <div className="font-serif text-4xl sm:text-5xl lg:text-6xl text-ink-900 mb-2">
+                <div className="font-serif text-3xl sm:text-5xl lg:text-6xl text-ink-900 mb-2">
                   <MetricCountUp
                     value={stat.value}
                     prefix={stat.prefix ?? ''}

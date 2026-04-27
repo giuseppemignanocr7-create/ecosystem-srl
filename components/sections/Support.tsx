@@ -42,13 +42,13 @@ export function Support() {
         <SectionNumber number="07 —" label="Assistenza" />
 
         <Reveal>
-          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-6 max-w-5xl text-pearl-shine-dark">
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(26px,3.6vw,52px)] leading-[1.18] mt-4 mb-6 max-w-5xl text-pearl-shine-dark">
             Servizio clienti
           </h2>
         </Reveal>
 
         <Reveal delay={100}>
-          <p className="text-lg text-ink-500 max-w-3xl mb-12 leading-relaxed">
+          <p className="text-base md:text-lg text-ink-500 max-w-3xl mb-8 md:mb-12 leading-relaxed">
             I piani Professional ed Enterprise includono supporto multicanale — email, chat e
             telefono — con SLA contrattuali, ore di assistenza incluse e onboarding dedicato.
             Per esigenze H24/7 è disponibile il pacchetto Supporto Premium con manager dedicato e
@@ -56,12 +56,12 @@ export function Support() {
           </p>
         </Reveal>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           {TIERS.map((t, i) => {
             const Icon = t.icon
             return (
               <Reveal key={t.plan} delay={150 + i * 80}>
-                <div className="h-full rounded-2xl border border-line bg-white p-6 hover:border-brand-violet/30 hover:shadow-md transition-all">
+                <div className="h-full rounded-2xl border border-line bg-white p-5 md:p-6 hover:border-brand-violet/30 hover:shadow-md transition-all">
                   <div className="w-10 h-10 rounded-lg bg-brand-violet/10 flex items-center justify-center mb-4">
                     <Icon size={18} className="text-brand-violet" />
                   </div>

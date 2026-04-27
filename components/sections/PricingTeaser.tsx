@@ -15,14 +15,14 @@ export function PricingTeaser() {
         <SectionNumber number="05 —" label="Investimento" />
         
         <Reveal>
-          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-12 max-w-5xl text-pearl-shine-dark">
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(26px,3.6vw,52px)] leading-[1.18] mt-4 mb-8 md:mb-12 max-w-5xl text-pearl-shine-dark">
             Prezzi trasparenti
             <br />
             calcolati sull&apos;uso reale
           </h2>
         </Reveal>
         
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-3 gap-5 md:gap-8 mb-10 md:mb-12">
           {PRICING_PLANS.map((plan, index) => (
             <Reveal key={plan.id} delay={150 + index * 100}>
               <Card 

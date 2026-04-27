@@ -32,7 +32,7 @@ export function SuiteGrid() {
         <SectionNumber number="02 —" label="La Piattaforma" />
 
         <Reveal delay={100}>
-          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-12 max-w-5xl text-pearl-shine-dark">
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(26px,3.6vw,52px)] leading-[1.18] mt-4 mb-8 md:mb-12 max-w-5xl text-pearl-shine-dark">
             Sviluppate con la precisione di sistemi nativi, le nostre suite operano in un
             ecosistema integrato, un unico DNA tecnologico,
             <span className="block mt-3">
@@ -43,7 +43,7 @@ export function SuiteGrid() {
 
         {/* GRID DELLE SUITE — card rettangolari 4-col */}
         <Reveal delay={150}>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 mb-10 md:mb-16">
             {SUITES.filter((s) => s.id !== 'archon-os').map((suite, idx) => {
               const tag = suite.tag.split('·')[0].trim()
               const color = SUITE_COLORS[suite.id] ?? '#7C3AED'

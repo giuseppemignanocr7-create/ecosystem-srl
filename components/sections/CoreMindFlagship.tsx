@@ -47,7 +47,7 @@ export function CoreMindFlagship() {
         <SectionNumber number="01 —" label="INTELLIGENCE" light />
         
         <Reveal>
-          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mb-16 max-w-5xl text-pearl-shine">
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(26px,3.6vw,52px)] leading-[1.18] mb-10 md:mb-16 max-w-5xl text-pearl-shine">
             Costruito intorno a CoreMind, l&apos;intelligenza nativa
             <br />
             che impara dai tuoi processi e li trasforma in produttività.

@@ -387,9 +387,15 @@ body {
   transform: translateY(-4px) rotateX(1deg) rotateY(-1deg);
 }
 
-/* Section padding */
+/* Section padding — mobile first, generous on desktop */
 .section-padding {
-  padding: 6rem 1rem;
+  padding: 4rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .section-padding {
+    padding: 6rem 1.5rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -401,6 +407,18 @@ body {
 @media (min-width: 1024px) {
   .section-padding {
     padding: 10rem 2rem;
+  }
+}
+
+/* Prevent horizontal overflow on mobile from any decorative absolute element */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 768px) {
+  button, a {
+    -webkit-tap-highlight-color: rgba(124, 58, 237, 0.15);
   }
 }
 

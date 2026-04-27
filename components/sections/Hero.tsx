@@ -7,7 +7,7 @@ import { MagneticButton } from '@/components/motion/MagneticButton'
 
 export function Hero() {
   return (
-    <section className="relative py-12 lg:py-16 px-6 lg:px-12 overflow-hidden bg-gradient-to-b from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white">
+    <section className="relative py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-12 overflow-hidden bg-gradient-to-b from-brand-navy-3 via-brand-navy to-brand-navy-2 text-white">
       {/* Subtle decorative bg */}
       <div
         className="absolute inset-0 pointer-events-none opacity-70"

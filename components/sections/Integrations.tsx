@@ -15,17 +15,17 @@ export function Integrations() {
         <SectionNumber number="04 —" label="Connessioni" />
         
         <Reveal delay={100}>
-          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(28px,3.6vw,52px)] leading-[1.18] mt-4 mb-12 max-w-5xl text-pearl-shine-dark">
+          <h2 className="font-serif font-normal italic tracking-[-0.01em] text-[clamp(26px,3.6vw,52px)] leading-[1.18] mt-4 mb-8 md:mb-12 max-w-5xl text-pearl-shine-dark">
             Ecosystem si integra con oltre 200 sistemi esterni attraverso API native, connettori certificati e middleware personalizzabili.
           </h2>
         </Reveal>
         
         <Reveal delay={200}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mb-12">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3 md:gap-4 mb-10 md:mb-12">
             {popularIntegrations.map((integration, index) => (
               <div 
                 key={integration.name}
-                className="bg-white rounded-lg p-4 border border-line hover:border-accent-tech hover:shadow-md transition-all duration-300 text-center"
+                className="bg-white rounded-lg p-3 md:p-4 border border-line hover:border-accent-tech hover:shadow-md transition-all duration-300 text-center"
               >
                 <p className="font-medium text-sm text-ink">{integration.name}</p>
                 <p className="text-xs text-ink-400 mt-1">{integration.category}</p>
