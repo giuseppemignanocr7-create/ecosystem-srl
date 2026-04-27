@@ -154,22 +154,7 @@ export function SideRail() {
         </motion.button>
 
         {!collapsed && (
-          <>
-            <Link
-              href="/"
-              aria-label="Ecosystem — Home"
-              className="mt-7 mb-2 mx-5 hover:opacity-80 transition-opacity inline-flex"
-            >
-              <Logo variant="light" size={130} priority />
-            </Link>
-            <div className="mx-5 mt-2 mb-3 flex items-center gap-2">
-              <span className="h-px flex-1 bg-gradient-to-r from-brand-violet to-transparent" />
-              <span className="font-mono text-[8px] tracking-[0.18em] uppercase text-brand-violet">
-                v2.0
-              </span>
-            </div>
-            <div className="mx-5 my-2 h-px bg-line" aria-hidden />
-          </>
+          <div className="mt-20" aria-hidden />
         )}
 
         {collapsed && (
