@@ -441,6 +441,18 @@ html, body {
   }
 }
 
+/* Demo immersive mode: hide global navigation chrome */
+body.demo-immersive aside[aria-label="Navigazione principale"],
+body.demo-immersive header.lg\:hidden,
+body.demo-immersive nav.lg\:hidden,
+body.demo-immersive [aria-label="Apri CoreMind AI"],
+body.demo-immersive [aria-label="CoreMind Chat"] {
+  display: none !important;
+}
+body.demo-immersive main {
+  padding-top: 0 !important;
+}
+
 /* Logo shimmer sweep */
 @keyframes logo-shimmer {
   0% { mask-position: -200%; }
